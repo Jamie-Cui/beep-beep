@@ -1,25 +1,35 @@
 import requests
 import time
 from typing import Dict, Optional
+import sys
+import os
+
+# Import progress utilities if available
+try:
+    from progress import ProgressBar
+    HAS_PROGRESS = True
+except ImportError:
+    HAS_PROGRESS = False
 
 
 class ModelScopeSummarizer:
-    """Summarizes paper abstracts using ModelScope API."""
+    """Summarizes paper abstracts using DashScope API (Qwen/通义千问)."""
 
-    API_URL = "https://api-inference.modelscope.cn/api/v1/models/{model}/text-generation"
-    DEFAULT_MODEL = "Qwen/Qwen2.5-72B-Instruct"  # Free model on ModelScope
-    DEFAULT_MAX_TOKENS = 300
+    # DashScope API (阿里云通义千问)
+    API_URL = "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation"
+    DEFAULT_MODEL = "qwen-plus"  # Free tier available
+    DEFAULT_MAX_TOKENS = 500
     DEFAULT_TEMPERATURE = 0.7
     DEFAULT_TIMEOUT = 60
     DEFAULT_RATE_LIMIT_DELAY = 1.0
 
     def __init__(self, api_key: str, model: str = None, max_retries: int = 3, retry_delay: float = 5.0):
         """
-        Initialize ModelScope summarizer.
+        Initialize DashScope summarizer.
 
         Args:
-            api_key: ModelScope API key
-            model: Model name to use (default: Qwen2.5-72B-Instruct)
+            api_key: DashScope API key (from https://dashscope.console.aliyun.com/)
+            model: Model name to use (default: qwen-plus)
             max_retries: Maximum number of retry attempts for failed requests
             retry_delay: Delay between retries in seconds
         """
@@ -42,7 +52,6 @@ class ModelScopeSummarizer:
         abstract = paper.get('abstract', '')
 
         if not abstract:
-            print(f"No abstract for paper: {title[:50]}...")
             return None
 
         # Create prompt for summarization
@@ -55,49 +64,30 @@ class ModelScopeSummarizer:
                 if summary:
                     return summary
             except Exception as e:
-                print(f"Attempt {attempt + 1}/{self.max_retries} failed for paper '{title[:50]}...': {e}")
                 if attempt < self.max_retries - 1:
                     time.sleep(self.retry_delay)
 
         return None
 
     def _create_prompt(self, title: str, abstract: str) -> str:
-        """
-        Create a prompt for the summarization model.
-
-        Args:
-            title: Paper title
-            abstract: Paper abstract
-
-        Returns:
-            Formatted prompt
-        """
-        return f"""Summarize the following research paper in 3-5 sentences. Focus on the main contribution, methods, and results.
+        """Create a prompt for the summarization model."""
+        return f"""Please summarize this research paper in 3-5 sentences. Focus on the main contribution, methods, and key results.
 
 Title: {title}
 
 Abstract: {abstract}
 
-Summary:"""
+Provide a concise summary:"""
 
     def _call_api(self, prompt: str) -> Optional[str]:
-        """
-        Call ModelScope API to generate summary.
-
-        Args:
-            prompt: The prompt to send to the model
-
-        Returns:
-            Generated summary, or None if failed
-        """
-        url = self.API_URL.format(model=self.model)
-
+        """Call DashScope API to generate summary."""
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json"
         }
 
         payload = {
+            "model": self.model,
             "input": {
                 "messages": [
                     {
@@ -108,17 +98,18 @@ Summary:"""
             },
             "parameters": {
                 "max_tokens": self.DEFAULT_MAX_TOKENS,
-                "temperature": self.DEFAULT_TEMPERATURE
+                "temperature": self.DEFAULT_TEMPERATURE,
+                "result_format": "message"
             }
         }
 
         try:
-            response = requests.post(url, json=payload, headers=headers, timeout=self.DEFAULT_TIMEOUT)
+            response = requests.post(self.API_URL, json=payload, headers=headers, timeout=self.DEFAULT_TIMEOUT)
             response.raise_for_status()
 
             result = response.json()
 
-            # Extract summary from response
+            # Extract summary from DashScope response format
             if "output" in result and "choices" in result["output"]:
                 choices = result["output"]["choices"]
                 if choices and len(choices) > 0:
@@ -127,23 +118,18 @@ Summary:"""
                     if content:
                         return content
 
-            print(f"Unexpected API response format: {result}")
             return None
 
         except requests.RequestException as e:
-            print(f"API request failed: {e}")
-            raise
-        except Exception as e:
-            print(f"Error processing API response: {e}")
             raise
 
     def batch_summarize(self, papers: list, delay: float = None) -> tuple:
         """
-        Summarize multiple papers with rate limiting.
+        Summarize multiple papers with rate limiting and progress display.
 
         Args:
             papers: List of paper dictionaries
-            delay: Delay between API calls to avoid rate limiting (default: DEFAULT_RATE_LIMIT_DELAY)
+            delay: Delay between API calls to avoid rate limiting
 
         Returns:
             Tuple of (successful_papers, failed_papers)
@@ -153,10 +139,20 @@ Summary:"""
 
         successful = []
         failed = []
-
         total = len(papers)
+
+        # Create progress bar if available
+        if HAS_PROGRESS:
+            progress = ProgressBar(total, "Summarizing papers")
+        else:
+            progress = None
+
         for i, paper in enumerate(papers, 1):
-            print(f"Summarizing paper {i}/{total}: {paper['title'][:60]}...")
+            # Update progress bar or print simple progress
+            if progress:
+                progress.update(1)
+            else:
+                print(f"[{i}/{total}] Summarizing: {paper['title'][:60]}...")
 
             summary = self.summarize(paper)
 
@@ -165,7 +161,11 @@ Summary:"""
                 paper['summary_status'] = 'success'
                 successful.append(paper)
             else:
-                paper['summary'] = paper.get('abstract', '')  # Fallback to abstract
+                abstract = paper.get('abstract', '')
+                if abstract:
+                    paper['summary'] = abstract
+                else:
+                    paper['summary'] = 'Summary not available'
                 paper['summary_status'] = 'failed'
                 failed.append(paper)
 
@@ -173,5 +173,9 @@ Summary:"""
             if i < total:
                 time.sleep(delay)
 
-        print(f"Summarization complete: {len(successful)} successful, {len(failed)} failed")
+        # Finish progress bar
+        if progress:
+            progress.finish()
+
+        print(f"\n✓ Summarization complete: {len(successful)} successful, {len(failed)} failed")
         return successful, failed
