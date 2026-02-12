@@ -1,0 +1,48 @@
+name: Fetch Papers
+
+on:
+  # Daily at 00:00 UTC
+  schedule:
+    - cron: '0 0 * * *'
+
+  # Manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-summarize:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Fetch and summarize papers
+        env:
+          MODELSCOPE_API_KEY: ${{ secrets.MODELSCOPE_API_KEY }}
+        run: |
+          python scripts/main.py
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update papers data - $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            git push
+          fi

@@ -1,0 +1,16 @@
+## llm
+.agent-shell
+.projectile*
+
+## Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+## Project specific
+.env

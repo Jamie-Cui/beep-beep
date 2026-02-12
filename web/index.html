@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security/Crypto + LLM Papers</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Security/Crypto + LLM Research Papers</h1>
+            <p class="subtitle">Automated aggregation from arXiv and IACR</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search by title, author, or keywords...">
+            </div>
+
+            <div class="filters">
+                <select id="sourceFilter">
+                    <option value="all">All Sources</option>
+                    <option value="arXiv">arXiv</option>
+                    <option value="IACR">IACR</option>
+                </select>
+
+                <select id="sortBy">
+                    <option value="date-desc">Newest First</option>
+                    <option value="date-asc">Oldest First</option>
+                    <option value="title">Title A-Z</option>
+                </select>
+
+                <button id="exportAllBtn" class="export-btn">Export All as BibTeX</button>
+            </div>
+        </div>
+
+        <div id="stats" class="stats"></div>
+
+        <div id="papersList" class="papers-list">
+            <div class="loading">Loading papers...</div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Last updated: <span id="lastUpdated">-</span></p>
+            <p>Data fetched daily from arXiv and IACR ePrint Archive</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
