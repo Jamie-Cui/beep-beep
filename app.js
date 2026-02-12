@@ -24,7 +24,7 @@ function setupEventListeners() {
 // Load papers from JSON
 async function loadPapers() {
     try {
-        const response = await fetch('../data/papers.json');
+        const response = await fetch('data/papers.json');
         if (!response.ok) {
             throw new Error('Failed to load papers');
         }

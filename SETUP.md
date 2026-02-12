@@ -38,7 +38,7 @@ This guide will help you set up and deploy your Security/Crypto + LLM Paper Aggr
 2. Under **Source**, select:
    - Source: **Deploy from a branch**
    - Branch: **master** (or **main** if that's your default branch)
-   - Folder: **/web**
+   - Folder: **/ (root)**
 3. Click **Save**
 4. Wait a few minutes for the site to deploy
 5. Your site will be available at: `https://<username>.github.io/<repo-name>/`
@@ -74,9 +74,9 @@ The workflow runs automatically every day at 00:00 UTC.
 - Only papers from the last 7 days are kept
 
 ### GitHub Pages shows 404
-- Make sure you selected `/web` as the folder in Pages settings
+- Make sure you selected `/ (root)` as the folder in Pages settings
 - Wait a few minutes after enabling Pages for DNS to propagate
-- Check that `web/index.html` exists in your repository
+- Check that `index.html` exists in your repository root
 
 ### Rate limiting issues
 - The default delays (3s for arXiv, 1s for summarization) should prevent rate limiting

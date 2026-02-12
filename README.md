@@ -28,7 +28,7 @@ Automatically fetches and summarizes papers from arXiv and IACR related to secur
 5. Enable GitHub Pages:
    - Go to Settings → Pages
    - Source: Deploy from a branch
-   - Branch: `master` (or `main`), folder: `/web`
+   - Branch: `master` (or `main`), folder: `/ (root)`
 
 ## Usage
 
@@ -56,10 +56,9 @@ beep-beep/
 ├── data/
 │   ├── papers.json           # Current papers
 │   └── failed.json           # Papers with failed summarization
-├── web/
-│   ├── index.html            # Main page
-│   ├── styles.css            # Styles
-│   └── app.js                # Frontend logic
+├── index.html                # Main page
+├── styles.css                # Styles
+├── app.js                    # Frontend logic
 └── requirements.txt          # Python dependencies
 ```
 
