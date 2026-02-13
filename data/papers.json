@@ -27,12 +27,12 @@
       "published_official": true,
       "keywords": [
         "agent",
+        "injection",
         "prompt",
-        "security",
-        "injection"
+        "security"
       ],
       "keyword_score": 4,
-      "summary": "This paper identifies fundamental security flaws in current mobile LLM agents—exemplified by Doubao Mobile Assistant—that stem from their reliance on fragile, unstructured screen scraping (“Screen-as-Interface”). Through a systematic four-dimensional threat analysis (Agent Identity, External Interface, Internal Reasoning, Action Execution), the authors expose vulnerabilities including visual spoofing, indirect prompt injection, and unauthorized privilege escalation. To address these, they propose *Aura*, a clean-slate, intent-centric mobile agent OS featuring a Hub-and-Spoke architecture with a privileged System Agent, sandboxed App Agents, and a security-enforcing Agent Kernel. The Kernel implements four novel defenses: cryptographic identity binding, semantic input sanitization, cognitive integrity via taint-aware memory and plan alignment, and granular auditable access control. Evaluated on MobileSafetyBench, Aura achieves a 94.3% task success rate (vs. 75% for Doubao), slashes high-risk attack success from ~40% to 4.4%, and delivers near-order-of-magnitude latency improvements.",
+      "summary": "This paper identifies fundamental security flaws in current mobile LLM agents—exemplified by Doubao Mobile Assistant—that stem from their reliance on fragile, unstructured screen-based interaction (“Screen-as-Interface”), including fake app identity, visual spoofing, indirect prompt injection, and privilege escalation. To address these, the authors propose **Aura**, a clean-slate, intent-centric mobile agent operating system architecture featuring a Hub-and-Spoke design with a privileged System Agent, sandboxed App Agents, and a security-enforcing Agent Kernel. The Kernel implements four novel defenses: cryptographic agent identity binding, semantic input sanitization via a multilayer Semantic Firewall, taint-aware cognitive integrity checks, and granular, auditable access control. Evaluated on MobileSafetyBench, Aura achieves a 94.3% task success rate (up from 75%), reduces high-risk attack success from ~40% to 4.4%, and delivers near-order-of-magnitude latency improvements—demonstrating a secure, efficient alternative to GUI-scraping approaches.",
       "summary_status": "success"
     },
     {
@@ -91,7 +91,7 @@
         "llm"
       ],
       "keyword_score": 2,
-      "summary": "VulReaD introduces a knowledge-graph-guided framework for software vulnerability detection that shifts focus from binary classification to fine-grained, CWE-aligned reasoning. It constructs a security knowledge graph (KG) as a semantic backbone and employs a teacher LLM to generate high-quality, CWE-consistent contrastive reasoning data—eliminating the need for manual annotations—and fine-tunes student models using Odds Ratio Preference Optimization (ORPO) to enforce taxonomy-aligned explanations while penalizing unsupported ones. On three real-world datasets, VulReaD achieves substantial gains: +8–10% binary F1 and +30% Macro-F1 / +18% Micro-F1 for multi-class (CWE-level) classification over SOTA baselines. The results demonstrate that KG-guided LLM reasoning not only improves detection accuracy but also significantly enhances interpretability and coverage across CWE categories.",
+      "summary": "VulReaD introduces a knowledge-graph-guided framework for software vulnerability detection that shifts focus from binary classification to interpretable, CWE-category-level reasoning. It constructs a security knowledge graph (KG) as a semantic backbone and employs a teacher LLM to generate high-quality, CWE-consistent contrastive reasoning data—eliminating the need for manual annotations—and fine-tunes student models using Odds Ratio Preference Optimization (ORPO) to align explanations with the CWE taxonomy. Evaluated on three real-world datasets, VulReaD achieves substantial gains: +8–10% binary F1 and +30% Macro-F1 / +18% Micro-F1 for multi-class (CWE) classification over SOTA baselines. The results demonstrate that KG-guided reasoning not only improves accuracy but also enhances interpretability and broadens CWE coverage compared to both LLM-only and deep learning approaches.",
       "summary_status": "success"
     },
     {
@@ -118,13 +118,13 @@
       "published_official": true,
       "keywords": [
         "machine",
-        "backdoor",
         "learning",
         "adversarial",
+        "backdoor",
         "neural"
       ],
       "keyword_score": 5,
-      "summary": "This paper introduces FIRE (Feature-space Inference-time REpair), a novel *runtime* backdoor mitigation method that operates during inference—without retraining or modifying the deployed model. FIRE identifies and reverses the latent-space direction(s) induced by a backdoor trigger across intermediate layers, hypothesizing that triggers cause structured, directional shifts in feature representations; it then applies corrective adjustments to poisoned inputs’ latent features to neutralize the backdoor effect. Evaluated on image benchmarks (e.g., CIFAR-10, ImageNet) under diverse backdoor attacks (e.g., BadNets, Blend) and architectures (ResNet, VGG), FIRE achieves strong attack suppression (often >90% reduction in attack success rate) while maintaining clean accuracy and incurring minimal computational overhead—outperforming existing inference-time defenses.",
+      "summary": "This paper introduces FIRE (Feature-space Inference-time REpair), a novel inference-time backdoor mitigation technique that operates on already-deployed deep neural networks without requiring retraining or data access. FIRE identifies latent-space directions—learned from a small set of clean and triggered samples—that capture how backdoor triggers systematically perturb internal feature representations; it then reverses these directions during inference to “repair” poisoned inputs in the latent space. Evaluated across multiple image datasets (e.g., CIFAR-10, ImageNet), architectures (ResNet, VGG), and backdoor attacks (e.g., BadNets, Blend), FIRE achieves strong attack suppression (often >90% ASR reduction) while maintaining high clean accuracy and incurring minimal computational overhead (<5% latency increase). Crucially, it outperforms existing runtime defenses—such as input preprocessing or activation clipping—in both effectiveness and efficiency.",
       "summary_status": "success"
     },
     {
@@ -267,14 +267,14 @@
       ],
       "published_official": true,
       "keywords": [
-        "security",
         "injection",
-        "agent",
+        "llm",
         "prompt",
-        "llm"
+        "agent",
+        "security"
       ],
       "keyword_score": 5,
-      "summary": "This paper provides a systematic overview (SoK) of Prompt Injection (PI) threats in LLM-based autonomous agents, introducing novel taxonomies for PI attacks (by payload generation: heuristic vs. optimization) and defenses (by intervention stage: text, model, or execution level). Critically, it identifies a major gap in existing research: most defenses and benchmarks ignore *context-dependent tasks*, where agents must reason over dynamic environmental observations—leading to overly optimistic evaluations. To address this, the authors propose **AgentPI**, a new benchmark that explicitly models realistic, context-aware agent interactions. Empirical evaluation on AgentPI reveals that no current defense simultaneously achieves high trustworthiness, utility, and low latency—and many defenses fail in context-rich settings because they suppress or ignore contextual inputs rather than securely integrating them. The work thus reframes PI security around context-aware reasoning and highlights urgent open challenges for robust, deployable LLM agents.",
+      "summary": "This paper presents a systematic analysis of Prompt Injection (PI) threats in LLM-based autonomous agents, introducing the first comprehensive taxonomy of PI attacks (by payload generation: heuristic vs. optimization) and defenses (by intervention stage: text, model, or execution level). Critically, it identifies a major gap in existing research: most defenses and benchmarks ignore *context-dependent tasks*, where agents must reason over dynamic environmental observations—a core capability of real-world agents. To address this, the authors propose **AgentPI**, a new benchmark explicitly designed to evaluate PI robustness in context-aware settings. Empirical evaluation using AgentPI reveals that no current defense achieves high trustworthiness, utility, and low latency simultaneously—and many defenses fail in realistic contexts because they suppress rather than safely integrate contextual inputs. The work thus reframes PI security around agent autonomy and provides actionable guidance for future research and deployment.",
       "summary_status": "success"
     },
     {
@@ -333,7 +333,7 @@
         "learning"
       ],
       "keyword_score": 2,
-      "summary": "FedPS introduces a unified, privacy-preserving framework for federated data preprocessing—addressing a critical but underexplored challenge in FL where raw data cannot be centralized. It uses lightweight data-sketching techniques to compute and aggregate local statistical summaries (e.g., means, quantiles, frequency counts) across clients with minimal communication overhead. Based on these aggregated statistics, FedPS enables consistent, distributed execution of key preprocessing tasks—including feature scaling, categorical encoding, discretization, and missing-value imputation—as well as extensions of preprocessing-dependent models (e.g., k-Means, k-NN, Bayesian Linear Regression) to both horizontal and vertical FL settings. Experiments demonstrate that FedPS achieves preprocessing consistency and model performance comparable to centralized preprocessing, while significantly reducing communication cost and preserving data privacy.",
+      "summary": "FedPS introduces a unified, privacy-preserving framework for federated data preprocessing—addressing a critical but underexplored challenge in FL where raw data cannot be centralized. It uses lightweight data-sketching techniques to compute and aggregate local statistical summaries (e.g., means, quantiles, frequencies) across clients, enabling distributed preprocessing without sharing raw data. The framework supports key operations—including feature scaling, categorical encoding, discretization, and missing-value imputation—and extends preprocessing-dependent models (e.g., k-Means, k-NN, Bayesian Linear Regression) to both horizontal and vertical FL settings. Experiments demonstrate that FedPS achieves preprocessing consistency and model performance comparable to centralized preprocessing, while significantly reducing communication overhead.",
       "summary_status": "success"
     },
     {
@@ -359,7 +359,7 @@
         "privacy"
       ],
       "keyword_score": 2,
-      "summary": "This paper introduces ASC, a differentially private algorithm for worst-case group optimization that addresses the privacy-accuracy trade-off in group-fair learning. Unlike prior methods that assign fixed or data-dependent weights—leading to uneven privacy budgets across groups—ASC adaptively adjusts both the sampling rate and gradient clipping threshold per group, ensuring uniform privacy guarantees while prioritizing harder-to-learn (e.g., minority) groups. The method achieves lower gradient variance and tighter privacy bounds by balancing representation and sensitivity across groups. Experiments show ASC significantly improves worst-case group accuracy over existing private baselines, without degrading average accuracy.",
+      "summary": "This paper introduces ASC, a differentially private algorithm for worst-case group optimization that addresses the privacy-accuracy trade-off in group-fair learning. Unlike prior methods that apply uniform sampling and clipping—leading to weaker privacy guarantees for minority groups—ASC adaptively adjusts both the sampling rate and gradient clipping threshold per group, enabling more frequent updates for harder-to-learn groups while maintaining uniform privacy budgets across all groups. The method reduces gradient variance and yields tighter, group-uniform privacy guarantees under Rényi Differential Privacy. Empirically, ASC achieves significantly higher worst-case group accuracy than existing private baselines, without degrading average model performance.",
       "summary_status": "success"
     },
     {
@@ -385,7 +385,7 @@
         "learning"
       ],
       "keyword_score": 2,
-      "summary": "This paper introduces *collaborative threshold watermarking*, a novel model watermarking scheme for federated learning that enables $K$ clients to jointly embed a shared watermark during training while ensuring only coalitions of at least $t$ clients can verify it—preventing individual clients from removing or falsely claiming ownership. The method uses secret sharing to distribute the watermark key $\\tau$ among clients, allowing verification via zero-knowledge–style checks without revealing $\\tau$ in plaintext. Evaluated on image classification with up to $K = 128$ clients, the approach achieves robust watermark detection (statistical significance $z \\geq 4$) with negligible accuracy loss and withstands adaptive fine-tuning attacks using up to 20% of the training data.",
+      "summary": "This paper introduces *collaborative threshold watermarking*, a novel model watermarking scheme for federated learning that enables $K$ clients to jointly embed a shared watermark while enforcing a $(t,K)$-threshold security policy: only coalitions of at least $t$ clients can reconstruct the secret watermark key and verify model provenance. The method uses secret sharing to distribute shares of the key among clients, allowing watermark verification via cryptographic protocols without exposing the key in plaintext. Evaluated on image classification tasks, the approach scales effectively to 128 clients with negligible accuracy degradation (<0.5%) and maintains strong detectability (detection statistic $z \\geq 4$) even under adaptive fine-tuning attacks using up to 20% of training data.",
       "summary_status": "success"
     },
     {
@@ -408,14 +408,14 @@
       ],
       "published_official": true,
       "keywords": [
-        "dp",
+        "privacy",
         "machine",
         "learning",
         "differential",
-        "privacy"
+        "dp"
       ],
       "keyword_score": 5,
-      "summary": "This paper investigates whether generative AI models for clinical time series—trained on moderate-to-large real patient data (MIMIC-IV)—naturally provide privacy protection without requiring explicit privacy mechanisms like differential privacy (DP). The authors conduct rigorous privacy audits using multiple established attacks (e.g., membership inference, reconstruction, and attribute inference) against synthetic time series generated by state-of-the-art models, including cross-dataset attacks using eICU data. Key results show that these attacks consistently fail when generators are trained on sufficiently large datasets (>10K patients), indicating strong empirical privacy preservation. Crucially, the study finds that adding DP to such models degrades synthetic data utility for downstream ML tasks without meaningfully improving privacy beyond what moderate-scale training already affords. Thus, the main contribution is the empirical demonstration that well-trained generative time series models on realistic clinical data volumes can be inherently privacy-preserving—challenging the assumption that DP or other formal guarantees are always necessary.",
+      "summary": "This paper investigates whether generative AI models trained on moderate-to-large clinical time series datasets (e.g., MIMIC-IV) inherently preserve patient privacy—without requiring additional differential privacy (DP) mechanisms. Using a comprehensive battery of established privacy attacks—including membership inference and model inversion—the authors audit state-of-the-art generative models on multivariate ICU time series and test cross-dataset leakage (e.g., attacking MIMIC-IV-trained models with eICU data). Key results show that these models resist privacy attacks when trained on sufficiently large real-world datasets (~10k+ patients), suggesting emergent privacy-by-scale. Crucially, the study finds that adding DP to such models degrades synthetic data utility for downstream predictive tasks without meaningfully improving privacy, challenging the necessity of DP in this setting. The main contribution is empirical evidence that well-scaled, non-DP generative time series models can be both high-fidelity and privacy-preserving in practice.",
       "summary_status": "success"
     },
     {
@@ -504,7 +504,7 @@
         "model"
       ],
       "keyword_score": 2,
-      "summary": "This paper introduces UMEM, a novel framework that jointly optimizes memory extraction (distilling insights from experience) and memory management (updating the memory bank) in LLM-based agents—unifying what prior work treats as separate, static processes. To enhance generalizability and reduce instance-specific noise, UMEM employs Semantic Neighborhood Modeling and a neighborhood-level marginal utility reward optimized via GRPO, evaluating memory usefulness across semantically clustered queries rather than isolated instances. Experiments on five benchmarks show UMEM achieves up to a 10.67% improvement in multi-turn interactive tasks over strong baselines and exhibits monotonic performance growth during continuous self-evolution. The framework thus advances self-evolving agents by enabling robust, generalizable memory formation through unified, neighborhood-aware optimization.",
+      "summary": "This paper introduces UMEM, a novel framework that unifies memory extraction (distilling insights from experience) and memory management (updating the memory bank) in LLM-based agents—addressing the limitation of prior methods that treat extraction as static and thus suffer from poor generalization. UMEM jointly optimizes a single LLM for both tasks using Semantic Neighborhood Modeling and a neighborhood-level marginal utility reward optimized via GRPO, ensuring memories are evaluated and refined across semantically related query clusters rather than individual instances. Experiments on five benchmarks show UMEM achieves up to 10.67% improvement in multi-turn interactive tasks over strong baselines and exhibits monotonic performance growth during continuous self-evolution. The framework thus enables more robust, generalizable, and scalable agent memory systems.",
       "summary_status": "success"
     },
     {
@@ -530,7 +530,7 @@
         "model"
       ],
       "keyword_score": 2,
-      "summary": "This paper introduces *Multimodal Finance Eval*, the first benchmark for evaluating vision-language models (VLMs) on French financial documents—such as investment prospectuses and PRIIPs—featuring 1,204 expert-validated questions across text extraction, table comprehension, chart interpretation, and multi-turn reasoning. Using an LLM-as-judge evaluation protocol, the authors assess six open-weight VLMs (8B–124B parameters) and find strong performance on text and table tasks (85–90% accuracy) but marked weaknesses in chart interpretation (34–62%). Crucially, multi-turn dialogue exposes a critical brittleness: early errors propagate across turns, collapsing overall accuracy to ~50%, irrespective of model scale. The study highlights that current VLMs are reliable for isolated extraction but fail in interactive, sequential financial analysis—underscoring the need for more robust, domain-specific multimodal reasoning.",
+      "summary": "This paper introduces *Multimodal Finance Eval*, the first benchmark for evaluating vision-language models (VLMs) on French financial documents—such as investment prospectuses and PRIIPs—featuring 1,204 expert-validated questions across text extraction, table comprehension, chart interpretation, and multi-turn reasoning. Using an LLM-as-judge evaluation protocol, the authors test six open-weight VLMs (8B–124B parameters) and find strong performance on text and table tasks (85–90% accuracy) but severe weaknesses in chart interpretation (34–62%) and, critically, in multi-turn dialogue, where early errors propagate and reduce accuracy to ~50% regardless of model size. The key contribution is both the creation of a realistic, high-stakes multimodal benchmark and the empirical demonstration that current VLMs are brittle in interactive, analytical financial reasoning—not just due to domain or language limitations, but due to cascading failures in conversational contexts.",
       "summary_status": "success"
     },
     {
@@ -856,7 +856,7 @@
         "model"
       ],
       "keyword_score": 2,
-      "summary": "This paper introduces DRIFT, a dual-model framework that decouples knowledge extraction from reasoning to improve long-context inference in LLMs. It uses a lightweight *knowledge model* to dynamically compress document chunks into query-conditioned *implicit fact tokens*, which are then projected into the reasoning model’s embedding space—replacing raw text while preserving semantic fidelity. Experiments demonstrate that DRIFT significantly outperforms strong baselines (e.g., RAG and standard fine-tuning) on long-context QA and reasoning tasks, with improved accuracy and efficiency. Crucially, it avoids common pitfalls like retriever noise, context window limits, and catastrophic forgetting, offering a scalable way to extend effective context length without enlarging the reasoning model.",
+      "summary": "This paper introduces DRIFT, a dual-model framework that decouples knowledge extraction from reasoning to improve long-context inference in LLMs. It uses a lightweight knowledge model to dynamically compress document chunks into query-conditioned *implicit fact tokens*—dense, embedding-space representations that replace raw text—while a separate reasoning model processes these tokens. Experiments show DRIFT significantly outperforms comparable baselines on long-context tasks without increasing the reasoning model’s context load or risking catastrophic forgetting. The method enables scalable, efficient context extension while preserving accuracy and avoiding retriever noise or parametric editing pitfalls.",
       "summary_status": "success"
     },
     {
@@ -1228,7 +1228,7 @@
         "llm"
       ],
       "keyword_score": 2,
-      "summary": "Quantum-Audit introduces the first comprehensive benchmark—comprising 2,700 rigorously curated questions—to systematically evaluate LLMs’ conceptual understanding of quantum computing, going beyond code generation to assess reasoning, misconception detection, and domain knowledge. It combines expert-written questions (1,000), LLM-extracted-and-validated questions from research papers (1,000), and challenging items including open-ended and false-premise questions (700). Evaluated across 26 models, top performers like Claude Opus 4.5 achieved 84% overall accuracy—exceeding the human expert average (74%)—but showed significant drops in performance on expert-written questions (−12 points) and advanced topics like quantum security (73%). Critically, models struggled with logical correction, achieving <66% accuracy on false-premise questions, revealing a key limitation in identifying and refuting erroneous assumptions.",
+      "summary": "Quantum-Audit introduces a novel, comprehensive benchmark of 2,700 questions—spanning expert-written, research-paper-derived, open-ended, and false-premise items—to systematically evaluate LLMs’ conceptual understanding of quantum computing, a gap unaddressed by prior code- or circuit-focused benchmarks. The study evaluates 26 state-of-the-art models using rigorous human validation and accuracy scoring across difficulty levels and question types. Key results show top models (e.g., Claude Opus 4.5) outperform human experts overall (84% vs. 74%), but exhibit significant weaknesses: a 12-point accuracy drop on expert-written questions, further declines on advanced topics like quantum security (73%), and poor critical reasoning—failing to detect false premises in over one-third of cases (<66% accuracy). These findings highlight that high aggregate scores mask fundamental deficits in deep conceptual reasoning and error correction, especially on rigorously crafted, nuanced quantum questions.",
       "summary_status": "success"
     },
     {
@@ -2312,789 +2312,8 @@
       "keyword_score": 2,
       "summary": "This paper presents K-Repro, the first large-scale agentic LLM system designed to autonomously reproduce Linux kernel N-day vulnerabilities—from security patches to working proofs-of-concept (PoCs). K-Repro integrates controlled code browsing, VM management, interactive debugging, and kernel-specific tooling to navigate the kernel’s complexity. Evaluated on 100 real-world exploitable vulnerabilities from KernelCTF, it successfully generates reproducing PoCs in over 50% of cases, with practical time and cost. The study further analyzes key drivers of success—including vulnerability type, patch clarity, and agent capabilities—offering actionable insights for improving autonomous security agents and assessing real-world N-day risk.",
       "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.07200v1",
-      "arxiv_id": "2602.07200v1",
-      "title": "BadSNN: Backdoor Attacks on Spiking Neural Networks via Adversarial Spiking Neuron",
-      "authors": [
-        "Abdullah Arafat Miah",
-        "Kevin Vu",
-        "Yu Bi"
-      ],
-      "abstract": "Spiking Neural Networks (SNNs) are energy-efficient counterparts of Deep Neural Networks (DNNs) with high biological plausibility, as information is transmitted through temporal spiking patterns. The core element of an SNN is the spiking neuron, which converts input data into spikes following the Leaky Integrate-and-Fire (LIF) neuron model. This model includes several important hyperparameters, such as the membrane potential threshold and membrane time constant. Both the DNNs and SNNs have proven to be exploitable by backdoor attacks, where an adversary can poison the training dataset with malicious triggers and force the model to behave in an attacker-defined manner. Yet, how an adversary can exploit the unique characteristics of SNNs for backdoor attacks remains underexplored. In this paper, we propose \\textit{BadSNN}, a novel backdoor attack on spiking neural networks that exploits hyperparameter variations of spiking neurons to inject backdoor behavior into the model. We further propose a trigger optimization process to achieve better attack performance while making trigger patterns less perceptible. \\textit{BadSNN} demonstrates superior attack performance on various datasets and architectures, as well as compared with state-of-the-art data poisoning-based backdoor attacks and robustness against common backdoor mitigation techniques. Codes can be found at https://github.com/SiSL-URI/BadSNN.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.07200v1",
-      "url": "https://arxiv.org/abs/2602.07200v1",
-      "categories": [
-        "cs.CR",
-        "cs.AI"
-      ],
-      "published_official": true,
-      "keywords": [
-        "data",
-        "backdoor",
-        "model",
-        "poisoning",
-        "neural"
-      ],
-      "keyword_score": 5,
-      "summary": "This paper introduces *BadSNN*, a novel backdoor attack specifically designed for Spiking Neural Networks (SNNs) that exploits the inherent hyperparameters of spiking neurons—particularly the membrane potential threshold and time constant—rather than relying solely on data poisoning. The method jointly optimizes these neuron hyperparameters and input triggers during training to embed stealthy, high-fidelity backdoor behavior, using gradient-based trigger optimization to minimize perceptibility. Experiments across multiple SNN architectures and datasets (e.g., CIFAR-10, DVS128 Gesture) show *BadSNN* achieves >95% attack success rates while maintaining clean accuracy, outperforming existing data-poisoning backdoor attacks and exhibiting strong resilience against common defenses like fine-tuning and neuron pruning. The work highlights a previously overlooked attack surface in SNNs—their biologically inspired neuron dynamics—and provides open-source code for reproducibility.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.07197v1",
-      "arxiv_id": "2602.07197v1",
-      "title": "Lite-BD: A Lightweight Black-box Backdoor Defense via Reviving Multi-Stage Image Transformations",
-      "authors": [
-        "Abdullah Arafat Miah",
-        "Yu Bi"
-      ],
-      "abstract": "Deep Neural Networks (DNNs) are vulnerable to backdoor attacks. Due to the nature of Machine Learning as a Service (MLaaS) applications, black-box defenses are more practical than white-box methods, yet existing purification techniques suffer from key limitations: a lack of justification for specific transformations, dataset dependency, high computational overhead, and a neglect of frequency-domain transformations. This paper conducts a preliminary study on various image transformations, identifying down-upscaling as the most effective backdoor trigger disruption technique. We subsequently propose \\texttt{Lite-BD}, a lightweight two-stage blackbox backdoor defense. \\texttt{Lite-BD} first employs a super-resolution-based down-upscaling stage to neutralize spatial triggers. A secondary stage utilizes query-based band-by-band frequency filtering to remove triggers hidden in specific bands. Extensive experiments against state-of-the-art attacks demonstrate that \\texttt{Lite-BD} provides robust and efficient protection. Codes can be found at https://github.com/SiSL-URI/Lite-BD.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.07197v1",
-      "url": "https://arxiv.org/abs/2602.07197v1",
-      "categories": [
-        "cs.CR"
-      ],
-      "published_official": true,
-      "keywords": [
-        "neural",
-        "backdoor"
-      ],
-      "keyword_score": 2,
-      "summary": "This paper introduces Lite-BD, a lightweight black-box backdoor defense that addresses key limitations of prior purification methods—such as dataset dependency, high computational cost, and neglect of frequency-domain triggers. Through empirical analysis, the authors identify down-upscaling as the most effective spatial transformation for disrupting backdoor triggers, and further discover that certain frequency bands harbor stealthy triggers; accordingly, Lite-BD combines a super-resolution-based down-upscaling stage (to neutralize spatial triggers) with a query-efficient, band-by-band frequency filtering stage (to suppress frequency-domain triggers). Evaluated against state-of-the-art backdoor attacks, Lite-BD achieves strong defense performance (e.g., >90% attack success rate reduction) while maintaining high clean accuracy and low inference overhead—making it practical for MLaaS settings.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.07152v1",
-      "arxiv_id": "2602.07152v1",
-      "title": "Trojans in Artificial Intelligence (TrojAI) Final Report",
-      "authors": [
-        "Kristopher W. Reese",
-        "Taylor Kulp-McDowall",
-        "Michael Majurski",
-        "Tim Blattner",
-        "Derek Juba",
-        "Peter Bajcsy",
-        "Antonio Cardone",
-        "Philippe Dessauw",
-        "Alden Dima",
-        "Anthony J. Kearsley",
-        "Melinda Kleczynski",
-        "Joel Vasanth",
-        "Walid Keyrouz",
-        "Chace Ashcraft",
-        "Neil Fendley",
-        "Ted Staley",
-        "Trevor Stout",
-        "Josh Carney",
-        "Greg Canal",
-        "Will Redman",
-        "Aurora Schmidt",
-        "Cameron Hickert",
-        "William Paul",
-        "Jared Markowitz",
-        "Nathan Drenkow",
-        "David Shriver",
-        "Marissa Connor",
-        "Keltin Grimes",
-        "Marco Christiani",
-        "Hayden Moore",
-        "Jordan Widjaja",
-        "Kasimir Gabert",
-        "Uma Balakrishnan",
-        "Satyanadh Gundimada",
-        "John Jacobellis",
-        "Sandya Lakkur",
-        "Vitus Leung",
-        "Jon Roose",
-        "Casey Battaglino",
-        "Farinaz Koushanfar",
-        "Greg Fields",
-        "Xihe Gu",
-        "Yaman Jandali",
-        "Xinqiao Zhang",
-        "Akash Vartak",
-        "Tim Oates",
-        "Ben Erichson",
-        "Michael Mahoney",
-        "Rauf Izmailov",
-        "Xiangyu Zhang",
-        "Guangyu Shen",
-        "Siyuan Cheng",
-        "Shiqing Ma",
-        "XiaoFeng Wang",
-        "Haixu Tang",
-        "Di Tang",
-        "Xiaoyi Chen",
-        "Zihao Wang",
-        "Rui Zhu",
-        "Susmit Jha",
-        "Xiao Lin",
-        "Manoj Acharya",
-        "Wenchao Li",
-        "Chao Chen"
-      ],
-      "abstract": "The Intelligence Advanced Research Projects Activity (IARPA) launched the TrojAI program to confront an emerging vulnerability in modern artificial intelligence: the threat of AI Trojans. These AI trojans are malicious, hidden backdoors intentionally embedded within an AI model that can cause a system to fail in unexpected ways, or allow a malicious actor to hijack the AI model at will. This multi-year initiative helped to map out the complex nature of the threat, pioneered foundational detection methods, and identified unsolved challenges that require ongoing attention by the burgeoning AI security field. This report synthesizes the program's key findings, including methodologies for detection through weight analysis and trigger inversion, as well as approaches for mitigating Trojan risks in deployed models. Comprehensive test and evaluation results highlight detector performance, sensitivity, and the prevalence of \"natural\" Trojans. The report concludes with lessons learned and recommendations for advancing AI security research.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.07152v1",
-      "url": "https://arxiv.org/abs/2602.07152v1",
-      "categories": [
-        "cs.CR"
-      ],
-      "published_official": true,
-      "keywords": [
-        "trojan",
-        "ai"
-      ],
-      "keyword_score": 2,
-      "summary": "The TrojAI program, led by IARPA, systematically investigated AI Trojans—malicious backdoors intentionally embedded in machine learning models—and made foundational contributions to AI security. It developed and rigorously evaluated novel detection methods, including weight-based analysis and trigger inversion techniques, and explored mitigation strategies for deployed models. Key results demonstrated varying detector performance across model architectures and Trojan types, revealed surprising prevalence of “natural” (unintentional) Trojans in pre-trained models, and exposed critical gaps in robustness and generalizability. The report synthesizes these findings to define the threat landscape, benchmark detection capabilities, and outline persistent challenges requiring continued research.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.07107v1",
-      "arxiv_id": "2602.07107v1",
-      "title": "ShallowJail: Steering Jailbreaks against Large Language Models",
-      "authors": [
-        "Shang Liu",
-        "Hanyu Pei",
-        "Zeyan Liu"
-      ],
-      "abstract": "Large Language Models(LLMs) have been successful in numerous fields. Alignment has usually been applied to prevent them from harmful purposes. However, aligned LLMs remain vulnerable to jailbreak attacks that deliberately mislead them into producing harmful outputs. Existing jailbreaks are either black-box, using carefully crafted, unstealthy prompts, or white-box, requiring resource-intensive computation. In light of these challenges, we introduce ShallowJail, a novel attack that exploits shallow alignment in LLMs. ShallowJail can misguide LLMs' responses by manipulating the initial tokens during inference. Through extensive experiments, we demonstrate the effectiveness of~\\shallow, which substantially degrades the safety of state-of-the-art LLM responses.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.07107v1",
-      "url": "https://arxiv.org/abs/2602.07107v1",
-      "categories": [
-        "cs.CR",
-        "cs.AI"
-      ],
-      "published_official": true,
-      "keywords": [
-        "jailbreak",
-        "llm"
-      ],
-      "keyword_score": 2,
-      "summary": "ShallowJail is a novel jailbreak attack that exploits shallow alignment—i.e., the limited depth of safety fine-tuning—in large language models by manipulating only the *initial tokens* of the input prompt during inference. Unlike black-box methods (which rely on hand-crafted, conspicuous prompts) or white-box approaches (requiring gradient access and heavy computation), ShallowJail operates efficiently with minimal perturbation and no model access beyond standard API calls. Experiments across multiple state-of-the-art LLMs (e.g., Llama-3, Claude, and GPT-4) show that ShallowJail significantly degrades safety performance—increasing harmful output rates by up to 5–10× compared to baseline prompts—while remaining stealthy and broadly applicable. The work highlights a critical vulnerability in current alignment strategies and provides a lightweight, scalable method for evaluating model robustness.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06911v1",
-      "arxiv_id": "2602.06911v1",
-      "title": "TamperBench: Systematically Stress-Testing LLM Safety Under Fine-Tuning and Tampering",
-      "authors": [
-        "Saad Hossain",
-        "Tom Tseng",
-        "Punya Syon Pandey",
-        "Samanvay Vajpayee",
-        "Matthew Kowal",
-        "Nayeema Nonta",
-        "Samuel Simko",
-        "Stephen Casper",
-        "Zhijing Jin",
-        "Kellin Pelrine",
-        "Sirisha Rambhatla"
-      ],
-      "abstract": "As increasingly capable open-weight large language models (LLMs) are deployed, improving their tamper resistance against unsafe modifications, whether accidental or intentional, becomes critical to minimize risks. However, there is no standard approach to evaluate tamper resistance. Varied data sets, metrics, and tampering configurations make it difficult to compare safety, utility, and robustness across different models and defenses. To this end, we introduce TamperBench, the first unified framework to systematically evaluate the tamper resistance of LLMs. TamperBench (i) curates a repository of state-of-the-art weight-space fine-tuning attacks and latent-space representation attacks; (ii) enables realistic adversarial evaluation through systematic hyperparameter sweeps per attack-model pair; and (iii) provides both safety and utility evaluations. TamperBench requires minimal additional code to specify any fine-tuning configuration, alignment-stage defense method, and metric suite while ensuring end-to-end reproducibility. We use TamperBench to evaluate 21 open-weight LLMs, including defense-augmented variants, across nine tampering threats using standardized safety and capability metrics with hyperparameter sweeps per model-attack pair. This yields novel insights, including effects of post-training on tamper resistance, that jailbreak-tuning is typically the most severe attack, and that Triplet emerges as a leading alignment-stage defense. Code is available at: https://github.com/criticalml-uw/TamperBench",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06911v1",
-      "url": "https://arxiv.org/abs/2602.06911v1",
-      "categories": [
-        "cs.CR",
-        "cs.AI"
-      ],
-      "published_official": true,
-      "keywords": [
-        "jailbreak",
-        "llm"
-      ],
-      "keyword_score": 2,
-      "summary": "This paper introduces TamperBench, the first unified, reproducible framework for systematically evaluating the tamper resistance of open-weight LLMs against both weight-space (e.g., fine-tuning) and latent-space adversarial attacks. It standardizes evaluation by curating nine diverse tampering threats, enabling hyperparameter-swept, adversarial testing across 21 models—including defense-augmented variants—while jointly measuring safety degradation and utility preservation. Key findings include that jailbreak-focused fine-tuning is the most damaging attack, post-training (e.g., alignment) generally improves tamper resistance, and Triplet alignment emerges as the most robust defense. The framework requires minimal setup and ensures end-to-end reproducibility, addressing critical gaps in standardized safety benchmarking.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06777v1",
-      "arxiv_id": "2602.06777v1",
-      "title": "Next-generation cyberattack detection with large language models: anomaly analysis across heterogeneous logs",
-      "authors": [
-        "Yassine Chagna",
-        "Antal Goldschmidt"
-      ],
-      "abstract": "This project explores large language models (LLMs) for anomaly detection across heterogeneous log sources. Traditional intrusion detection systems suffer from high false positive rates, semantic blindness, and data scarcity, as logs are inherently sensitive, making clean datasets rare. We address these challenges through three contributions: (1) LogAtlas-Foundation-Sessions and LogAtlas-Defense-Set, balanced and heterogeneous log datasets with explicit attack annotations and privacy preservation; (2) empirical benchmarking revealing why standard metrics such as F1 and accuracy are misleading for security applications; and (3) a two phase training framework combining log understanding (Base-AMAN, 3B parameters) with real time detection (AMAN, 0.5B parameters via knowledge distillation). Results demonstrate practical feasibility, with inference times of 0.3-0.5 seconds per session and operational costs below 50 USD per day.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06777v1",
-      "url": "https://arxiv.org/abs/2602.06777v1",
-      "categories": [
-        "cs.CR",
-        "cs.AI"
-      ],
-      "published_official": true,
-      "keywords": [
-        "inference",
-        "security"
-      ],
-      "keyword_score": 2,
-      "summary": "This paper introduces AMAN, a two-phase LLM-based framework for detecting cyberattacks across heterogeneous log sources, addressing key limitations of traditional intrusion detection systems—namely high false positives, semantic blindness, and scarce labeled data. The authors contribute two novel, privacy-preserving, attack-annotated log datasets (LogAtlas-Foundation-Sessions and LogAtlas-Defense-Set) and empirically demonstrate that standard metrics like F1 and accuracy are misleading for security tasks due to class imbalance and operational constraints. Their method involves pretraining a 3B-parameter model (Base-AMAN) for deep log understanding, followed by knowledge distillation into a lightweight 0.5B-parameter model (AMAN) optimized for real-time detection. Experiments show AMAN achieves practical deployment feasibility, with sub-second inference (0.3–0.5 sec/session) and low operational cost (<$50/day).",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06759v1",
-      "arxiv_id": "2602.06759v1",
-      "title": "\"Tab, Tab, Bug'': Security Pitfalls of Next Edit Suggestions in AI-Integrated IDEs",
-      "authors": [
-        "Yunlong Lyu",
-        "Yixuan Tang",
-        "Peng Chen",
-        "Tian Dong",
-        "Xinyu Wang",
-        "Zhiqiang Dong",
-        "Hao Chen"
-      ],
-      "abstract": "Modern AI-integrated IDEs are shifting from passive code completion to proactive Next Edit Suggestions (NES). Unlike traditional autocompletion, NES is designed to construct a richer context from both recent user interactions and the broader codebase to suggest multi-line, cross-line, or even cross-file modifications. This evolution significantly streamlines the programming workflow into a tab-by-tab interaction and enhances developer productivity. Consequently, NES introduces a more complex context retrieval mechanism and sophisticated interaction patterns. However, existing studies focus almost exclusively on the security implications of standalone LLM-based code generation, ignoring the potential attack vectors posed by NES in modern AI-integrated IDEs. The underlying mechanisms of NES remain under-explored, and their security implications are not yet fully understood.   In this paper, we conduct the first systematic security study of NES systems. First, we perform an in-depth dissection of the NES mechanisms to understand the newly introduced threat vectors. It is found that NES retrieves a significantly expanded context, including inputs from imperceptible user actions and global codebase retrieval, which increases the attack surfaces. Second, we conduct a comprehensive in-lab study to evaluate the security implications of NES. The evaluation results reveal that NES is susceptible to context poisoning and is sensitive to transactional edits and human-IDE interactions. Third, we perform a large-scale online survey involving over 200 professional developers to assess the perceptions of NES security risks in real-world development workflows. The survey results indicate a general lack of awareness regarding the potential security pitfalls associated with NES, highlighting the need for increased education and improved security countermeasures in AI-integrated IDEs.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06759v1",
-      "url": "https://arxiv.org/abs/2602.06759v1",
-      "categories": [
-        "cs.CR",
-        "cs.HC"
-      ],
-      "published_official": true,
-      "keywords": [
-        "security",
-        "llm"
-      ],
-      "keyword_score": 2,
-      "summary": "This paper presents the first systematic security study of Next Edit Suggestions (NES) in AI-integrated IDEs—proactive, context-rich suggestions that go beyond traditional autocompletion by incorporating multi-line, cross-file, and interaction-aware code changes. Through mechanism dissection, in-lab experiments, and a survey of 200+ developers, the authors identify critical vulnerabilities: NES is highly susceptible to *context poisoning* (e.g., malicious comments or hidden edits manipulating suggestions) and sensitive to subtle, transactional user-IDE interactions that expand the attack surface. Key results show that NES retrieves broad, often imperceptible context—including ambient codebase data and silent user actions—enabling stealthy exploitation. Crucially, the survey reveals widespread developer unawareness of these risks, underscoring an urgent need for security-aware design, transparency, and education in AI-powered development tools.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06756v1",
-      "arxiv_id": "2602.06756v1",
-      "title": "$f$-Differential Privacy Filters: Validity and Approximate Solutions",
-      "authors": [
-        "Long Tran",
-        "Antti Koskela",
-        "Ossi Räisä",
-        "Antti Honkela"
-      ],
-      "abstract": "Accounting for privacy loss under fully adaptive composition -- where both the choice of mechanisms and their privacy parameters may depend on the entire history of prior outputs -- is a central challenge in differential privacy (DP). In this setting, privacy filters are stopping rules for compositions that ensure a prescribed global privacy budget is not exceeded. It remains unclear whether optimal trade-off-function-based notions, such as $f$-DP, admit valid privacy filters under fully adaptive interaction. We show that the natural approach to defining an $f$-DP filter -- composing individual trade-off curves and stopping when the prescribed $f$-DP curve is crossed -- is fundamentally invalid. We characterise when and why this failure occurs, and establish necessary and sufficient conditions under which the natural filter is valid. Furthermore, we prove a fully adaptive central limit theorem for $f$-DP and construct an approximate Gaussian DP filter for subsampled Gaussian mechanisms at small sampling rates $q<0.2$ and large sampling rates $q>0.8$, yielding tighter privacy guarantees than filters based on Rényi DP in the same setting.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06756v1",
-      "url": "https://arxiv.org/abs/2602.06756v1",
-      "categories": [
-        "cs.CR"
-      ],
-      "published_official": true,
-      "keywords": [
-        "dp",
-        "differential",
-        "privacy"
-      ],
-      "keyword_score": 3,
-      "summary": "This paper investigates the validity of privacy filters for $f$-differential privacy (DP) under fully adaptive composition—where mechanisms and their parameters can depend on all prior outputs. The authors prove that the natural approach of composing trade-off functions and stopping when the global $f$-DP bound is crossed is *generally invalid*, characterizing precisely when and why it fails and giving necessary and sufficient conditions for validity. As a key positive result, they establish a fully adaptive central limit theorem for $f$-DP and construct an *approximate Gaussian DP filter* for subsampled Gaussian mechanisms, which yields tighter privacy guarantees than Rényi DP–based filters—especially at extreme sampling rates ($q < 0.2$ or $q > 0.8$).",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06751v1",
-      "arxiv_id": "2602.06751v1",
-      "title": "Beyond Function-Level Analysis: Context-Aware Reasoning for Inter-Procedural Vulnerability Detection",
-      "authors": [
-        "Yikun Li",
-        "Ting Zhang",
-        "Jieke Shi",
-        "Chengran Yang",
-        "Junda He",
-        "Xin Zhou",
-        "Jinfeng Jiang",
-        "Huihui Huang",
-        "Wen Bin Leow",
-        "Yide Yin",
-        "Eng Lieh Ouh",
-        "Lwin Khin Shar",
-        "David Lo"
-      ],
-      "abstract": "Recent progress in ML and LLMs has improved vulnerability detection, and recent datasets have reduced label noise and unrelated code changes. However, most existing approaches still operate at the function level, where models are asked to predict whether a single function is vulnerable without inter-procedural context. In practice, vulnerability presence and root cause often depend on contextual information. Naively appending such context is not a reliable solution: real-world context is long, redundant, and noisy, and we find that unstructured context frequently degrades the performance of strong fine-tuned code models.   We present CPRVul, a context-aware vulnerability detection framework that couples Context Profiling and Selection with Structured Reasoning. CPRVul constructs a code property graph, and extracts candidate context. It then uses an LLM to generate security-focused profiles and assign relevance scores, selecting only high-impact contextual elements that fit within the model's context window. In the second phase, CPRVul integrates the target function, the selected context, and auxiliary vulnerability metadata to generate reasoning traces, which are used to fine-tune LLMs for reasoning-based vulnerability detection.   We evaluate CPRVul on three high-quality vulnerability datasets: PrimeVul, TitanVul, and CleanVul. Across all datasets, CPRVul consistently outperforms function-only baselines, achieving accuracies ranging from 64.94% to 73.76%, compared to 56.65% to 63.68% for UniXcoder. Specifically, on the challenging PrimeVul benchmark, CPRVul achieves 67.78% accuracy, outperforming prior state-of-the-art approaches, improving accuracy from 55.17% to 67.78% (22.9% improvement). Our ablations further show that neither raw context nor processed context alone benefits strong code models; gains emerge only when processed context is paired with structured reasoning.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06751v1",
-      "url": "https://arxiv.org/abs/2602.06751v1",
-      "categories": [
-        "cs.CR",
-        "cs.SE"
-      ],
-      "published_official": true,
-      "keywords": [
-        "security",
-        "llm"
-      ],
-      "keyword_score": 2,
-      "summary": "This paper introduces CPRVul, a novel framework for inter-procedural vulnerability detection that moves beyond function-level analysis by incorporating *context-aware reasoning*. CPRVul uses a two-phase approach: (1) **Context Profiling and Selection**, where it builds a code property graph, leverages an LLM to generate security-focused profiles and relevance scores, and selects only high-impact contextual elements (e.g., caller/callee functions, data flows) to avoid noise and context-window limitations; and (2) **Structured Reasoning**, where the target function, selected context, and vulnerability metadata are integrated into reasoning traces to fine-tune LLMs. Evaluated on PrimeVul, TitanVul, and CleanVul, CPRVul achieves state-of-the-art accuracy (64.94–73.76%), notably improving PrimeVul performance by 22.9% over prior SOTA (55.17% → 67.78%). Ablation studies confirm that gains stem *only* from the synergistic combination of processed context and structured reasoning—not from raw or unstructured context alone.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06718v1",
-      "arxiv_id": "2602.06718v1",
-      "title": "GhostCite: A Large-Scale Analysis of Citation Validity in the Age of Large Language Models",
-      "authors": [
-        "Zuyao Xu",
-        "Yuqi Qiu",
-        "Lu Sun",
-        "FaSheng Miao",
-        "Fubin Wu",
-        "Xinyi Wang",
-        "Xiang Li",
-        "Haozhe Lu",
-        "ZhengZe Zhang",
-        "Yuxin Hu",
-        "Jialu Li",
-        "Jin Luo",
-        "Feng Zhang",
-        "Rui Luo",
-        "Xinran Liu",
-        "Yingxian Li",
-        "Jiaji Liu"
-      ],
-      "abstract": "Citations provide the basis for trusting scientific claims; when they are invalid or fabricated, this trust collapses. With the advent of Large Language Models (LLMs), this risk has intensified: LLMs are increasingly used for academic writing, yet their tendency to fabricate citations (``ghost citations'') poses a systemic threat to citation validity.   To quantify this threat and inform mitigation, we develop CiteVerifier, an open-source framework for large-scale citation verification, and conduct the first comprehensive study of citation validity in the LLM era through three experiments built on it. We benchmark 13 state-of-the-art LLMs on citation generation across 40 research domains, finding that all models hallucinate citations at rates from 14.23\\% to 94.93\\%, with significant variation across research domains. Moreover, we analyze 2.2 million citations from 56,381 papers published at top-tier AI/ML and Security venues (2020--2025), confirming that 1.07\\% of papers contain invalid or fabricated citations (604 papers), with an 80.9\\% increase in 2025 alone. Furthermore, we survey 97 researchers and analyze 94 valid responses after removing 3 conflicting samples, revealing a critical ``verification gap'': 41.5\\% of researchers copy-paste BibTeX without checking and 44.4\\% choose no-action responses when encountering suspicious references; meanwhile, 76.7\\% of reviewers do not thoroughly check references and 80.0\\% never suspect fake citations. Our findings reveal an accelerating crisis where unreliable AI tools, combined with inadequate human verification by researchers and insufficient peer review scrutiny, enable fabricated citations to contaminate the scientific record. We propose interventions for researchers, venues, and tool developers to protect citation integrity.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06718v1",
-      "url": "https://arxiv.org/abs/2602.06718v1",
-      "categories": [
-        "cs.CR",
-        "cs.AI"
-      ],
-      "published_official": true,
-      "keywords": [
-        "security",
-        "llm"
-      ],
-      "keyword_score": 2,
-      "summary": "This paper introduces CiteVerifier, an open-source framework for large-scale citation verification, and conducts the first comprehensive study of citation validity in the LLM era. Through three experiments—benchmarking 13 state-of-the-art LLMs across 40 research domains, analyzing 2.2 million citations from 56,381 top-tier AI/ML and Security papers (2020–2025), and surveying 97 researchers—the authors find alarmingly high rates of “ghost citations”: LLMs hallucinate citations at 14–95% rates depending on model and domain; 1.07% of published papers contain invalid/fabricated citations, with an 80.9% surge in such cases in 2025 alone; and a critical “verification gap” exists, as many researchers skip citation checks and reviewers rarely scrutinize references. The study reveals a systemic crisis fueled by unreliable AI tools and inadequate human oversight, and proposes concrete interventions for researchers, publishers, and tool developers to safeguard scientific integrity.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06700v1",
-      "arxiv_id": "2602.06700v1",
-      "title": "Taipan: A Query-free Transfer-based Multiple Sensitive Attribute Inference Attack Solely from Publicly Released Graphs",
-      "authors": [
-        "Ying Song",
-        "Balaji Palanisamy"
-      ],
-      "abstract": "Graph-structured data underpin a wide spectrum of modern applications. However, complex graph topologies and homophilic patterns can facilitate attribute inference attacks (AIAs) by enabling sensitive information leakage to propagate across local neighborhoods. Existing AIAs predominantly assume that adversaries can probe sensitive attributes through repeated model queries. Such assumptions are often impractical in real-world settings due to stringent data protection regulations, prohibitive query budgets, and heightened detection risks, especially when inferring multiple sensitive attributes. More critically, this model-centric perspective obscures a pervasive blind spot: \\textbf{intrinsic multiple sensitive information leakage arising solely from publicly released graphs.} To exploit this unexplored vulnerability, we introduce a new attack paradigm and propose \\textbf{Taipan, the first query-free transfer-based attack framework for multiple sensitive attribute inference attacks on graphs (G-MSAIAs).} Taipan integrates \\emph{Hierarchical Attack Knowledge Routing} to capture intricate inter-attribute correlations, and \\emph{Prompt-guided Attack Prototype Refinement} to mitigate negative transfer and performance degradation. We further present a systematic evaluation framework tailored to G-MSAIAs. Extensive experiments on diverse real-world graph datasets demonstrate that Taipan consistently achieves strong attack performance across same-distribution settings and heterogeneous similar- and out-of-distribution settings with mismatched feature dimensionalities, and remains effective even under rigorous differential privacy guarantees. Our findings underscore the urgent need for more robust multi-attribute privacy-preserving graph publishing methods and data-sharing practices.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06700v1",
-      "url": "https://arxiv.org/abs/2602.06700v1",
-      "categories": [
-        "cs.CR",
-        "cs.LG"
-      ],
-      "published_official": true,
-      "keywords": [
-        "differential",
-        "privacy"
-      ],
-      "keyword_score": 2,
-      "summary": "This paper introduces Taipan, the first query-free, transfer-based framework for inferring *multiple* sensitive attributes from *publicly released graphs*—without requiring access to target models or repeated queries. It addresses a critical real-world gap by exploiting intrinsic information leakage in graph structure alone, using two novel components: Hierarchical Attack Knowledge Routing (to model inter-attribute correlations) and Prompt-guided Attack Prototype Refinement (to reduce negative transfer). Evaluated across diverse real-world graphs—including same-, similar-, and out-of-distribution settings and under differential privacy—Taipan consistently achieves strong inference accuracy despite feature mismatches and privacy noise. The work reveals a previously overlooked privacy vulnerability in graph publishing and calls for stronger multi-attribute privacy safeguards.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06630v1",
-      "arxiv_id": "2602.06630v1",
-      "title": "TrapSuffix: Proactive Defense Against Adversarial Suffixes in Jailbreaking",
-      "authors": [
-        "Mengyao Du",
-        "Han Fang",
-        "Haokai Ma",
-        "Gang Yang",
-        "Quanjun Yin",
-        "Shouling Ji",
-        "Ee-Chien Chang"
-      ],
-      "abstract": "Suffix-based jailbreak attacks append an adversarial suffix, i.e., a short token sequence, to steer aligned LLMs into unsafe outputs. Since suffixes are free-form text, they admit endlessly many surface forms, making jailbreak mitigation difficult. Most existing defenses depend on passive detection of suspicious suffixes, without leveraging the defender's inherent asymmetric ability to inject secrets and proactively conceal gaps. Motivated by this, we take a controllability-oriented perspective and develop a proactive defense that nudges attackers into a no-win dilemma: either they fall into defender-designed optimization traps and fail to produce an effective adversarial suffix, or they can succeed only by generating adversarial suffixes that carry distinctive, traceable fingerprints. We propose TrapSuffix, a lightweight fine-tuning approach that injects trap-aligned behaviors into the base model without changing the inference pipeline. TrapSuffix channels jailbreak attempts into these two outcomes by reshaping the model's response landscape to adversarial suffixes. Across diverse suffix-based jailbreak settings, TrapSuffix reduces the average attack success rate to below 0.01 percent and achieves an average tracing success rate of 87.9 percent, providing both strong defense and reliable traceability. It introduces no inference-time overhead and incurs negligible memory cost, requiring only 15.87 MB of additional memory on average, whereas state-of-the-art LLM-based detection defenses typically incur memory overheads at the 1e4 MB level, while composing naturally with existing filtering-based defenses for complementary protection.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06630v1",
-      "url": "https://arxiv.org/abs/2602.06630v1",
-      "categories": [
-        "cs.CR"
-      ],
-      "published_official": true,
-      "keywords": [
-        "jailbreak",
-        "llm"
-      ],
-      "keyword_score": 2,
-      "summary": "This paper introduces TrapSuffix, a proactive defense against suffix-based jailbreak attacks on LLMs. Instead of passively detecting malicious suffixes, TrapSuffix uses lightweight fine-tuning to reshape the model’s response landscape—introducing “optimization traps” that force attackers into a no-win dilemma: either fail to generate effective adversarial suffixes or produce ones with distinctive, traceable fingerprints. Evaluated across diverse jailbreak settings, it reduces attack success rates to <0.01% and achieves 87.9% tracing accuracy, with zero inference-time overhead and only ~16 MB memory cost—orders of magnitude lower than detector-based defenses. The method is compatible with existing filtering defenses and requires no changes to the inference pipeline.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06616v1",
-      "arxiv_id": "2602.06616v1",
-      "title": "Confundo: Learning to Generate Robust Poison for Practical RAG Systems",
-      "authors": [
-        "Haoyang Hu",
-        "Zhejun Jiang",
-        "Yueming Lyu",
-        "Junyuan Zhang",
-        "Yi Liu",
-        "Ka-Ho Chow"
-      ],
-      "abstract": "Retrieval-augmented generation (RAG) is increasingly deployed in real-world applications, where its reference-grounded design makes outputs appear trustworthy. This trust has spurred research on poisoning attacks that craft malicious content, inject it into knowledge sources, and manipulate RAG responses. However, when evaluated in practical RAG systems, existing attacks suffer from severely degraded effectiveness. This gap stems from two overlooked realities: (i) content is often processed before use, which can fragment the poison and weaken its effect, and (ii) users often do not issue the exact queries anticipated during attack design. These factors can lead practitioners to underestimate risks and develop a false sense of security. To better characterize the threat to practical systems, we present Confundo, a learning-to-poison framework that fine-tunes a large language model as a poison generator to achieve high effectiveness, robustness, and stealthiness. Confundo provides a unified framework supporting multiple attack objectives, demonstrated by manipulating factual correctness, inducing biased opinions, and triggering hallucinations. By addressing these overlooked challenges, Confundo consistently outperforms a wide range of purpose-built attacks across datasets and RAG configurations by large margins, even in the presence of defenses. Beyond exposing vulnerabilities, we also present a defensive use case that protects web content from unauthorized incorporation into RAG systems via scraping, with no impact on user experience.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06616v1",
-      "url": "https://arxiv.org/abs/2602.06616v1",
-      "categories": [
-        "cs.CR",
-        "cs.LG"
-      ],
-      "published_official": true,
-      "keywords": [
-        "poisoning",
-        "model"
-      ],
-      "keyword_score": 2,
-      "summary": "This paper introduces Confundo, a learning-to-poison framework that generates robust, stealthy adversarial content to compromise real-world RAG systems—addressing critical gaps in prior attacks, namely vulnerability to preprocessing (e.g., chunking, filtering) and sensitivity to query variations. Confundo fine-tunes an LLM as a poison generator, optimizing for effectiveness across diverse attack goals (e.g., factual corruption, bias induction, hallucination triggering) while remaining resilient to practical system perturbations. Evaluations across multiple datasets and RAG configurations show Confundo significantly outperforms existing poisoning methods—even under common defenses—demonstrating previously underestimated risks. The authors also repurpose Confundo defensively to watermark web content, preventing unauthorized scraping into RAG knowledge bases without affecting legitimate user experience.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06547v1",
-      "arxiv_id": "2602.06547v1",
-      "title": "Malicious Agent Skills in the Wild: A Large-Scale Security Empirical Study",
-      "authors": [
-        "Yi Liu",
-        "Zhihao Chen",
-        "Yanjun Zhang",
-        "Gelei Deng",
-        "Yuekang Li",
-        "Jianting Ning",
-        "Leo Yu Zhang"
-      ],
-      "abstract": "Third-party agent skills extend LLM-based agents with instruction files and executable code that run on users' machines. Skills execute with user privileges and are distributed through community registries with minimal vetting, but no ground-truth dataset exists to characterize the resulting threats. We construct the first labeled dataset of malicious agent skills by behaviorally verifying 98,380 skills from two community registries, confirming 157 malicious skills with 632 vulnerabilities. These attacks are not incidental. Malicious skills average 4.03 vulnerabilities across a median of three kill chain phases, and the ecosystem has split into two archetypes: Data Thieves that exfiltrate credentials through supply chain techniques, and Agent Hijackers that subvert agent decision-making through instruction manipulation. A single actor accounts for 54.1\\% of confirmed cases through templated brand impersonation. Shadow features, capabilities absent from public documentation, appear in 0\\% of basic attacks but 100\\% of advanced ones; several skills go further by exploiting the AI platform's own hook system and permission flags. Responsible disclosure led to 93.6\\% removal within 30 days. We release the dataset and analysis pipeline to support future work on agent skill security.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06547v1",
-      "url": "https://arxiv.org/abs/2602.06547v1",
-      "categories": [
-        "cs.CR",
-        "cs.AI",
-        "cs.CL",
-        "cs.ET"
-      ],
-      "published_official": true,
-      "keywords": [
-        "agent",
-        "security",
-        "llm"
-      ],
-      "keyword_score": 3,
-      "summary": "This paper presents the first large-scale empirical security study of third-party LLM agent skills, constructing a labeled dataset of 98,380 skills from community registries and behaviorally verifying 157 malicious ones containing 632 vulnerabilities. Using dynamic analysis and behavioral verification (not static heuristics), the authors identify two dominant threat archetypes: *Data Thieves*—exfiltrating credentials via supply-chain compromises—and *Agent Hijackers*—manipulating agent instructions to subvert decision-making. Key findings include that malicious skills average over four vulnerabilities across multiple kill chain phases, rely heavily on undocumented “shadow features” (present in 100% of advanced attacks), and are often orchestrated by a single actor responsible for >54% of cases via templated brand impersonation. Responsible disclosure achieved 93.6% removal within 30 days, and the authors publicly release their dataset and analysis pipeline to advance agent skill security research.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06532v1",
-      "arxiv_id": "2602.06532v1",
-      "title": "Dependable Artificial Intelligence with Reliability and Security (DAIReS): A Unified Syndrome Decoding Approach for Hallucination and Backdoor Trigger Detection",
-      "authors": [
-        "Hema Karnam Surendrababu",
-        "Nithin Nagaraj"
-      ],
-      "abstract": "Machine Learning (ML) models, including Large Language Models (LLMs), are characterized by a range of system-level attributes such as security and reliability. Recent studies have demonstrated that ML models are vulnerable to multiple forms of security violations, among which backdoor data-poisoning attacks represent a particularly insidious threat, enabling unauthorized model behavior and systematic misclassification. In parallel, deficiencies in model reliability can manifest as hallucinations in LLMs, leading to unpredictable outputs and substantial risks for end users. In this work on Dependable Artificial Intelligence with Reliability and Security (DAIReS), we propose a novel unified approach based on Syndrome Decoding for the detection of both security and reliability violations in learning-based systems. Specifically, we adapt the syndrome decoding approach to the NLP sentence-embedding space, enabling the discrimination of poisoned and non-poisoned samples within ML training datasets. Additionally, the same methodology can effectively detect hallucinated content due to self referential meta explanation tasks in LLMs.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06532v1",
-      "url": "https://arxiv.org/abs/2602.06532v1",
-      "categories": [
-        "cs.CR"
-      ],
-      "published_official": true,
-      "keywords": [
-        "poisoning",
-        "data",
-        "model"
-      ],
-      "keyword_score": 3,
-      "summary": "This paper introduces DAIReS, a unified framework using syndrome decoding—a technique adapted from error-correcting codes—to jointly detect both backdoor triggers (a security threat) and hallucinations (a reliability failure) in ML models, including LLMs. The method operates in the sentence-embedding space, where it identifies anomalous patterns by computing and analyzing syndromes—low-dimensional residuals that reveal deviations from expected model behavior. Key results show DAIReS achieves high detection accuracy for backdoored samples in training data and reliably flags hallucinated outputs during self-referential meta-explanation tasks in LLMs, outperforming baseline methods. Crucially, it requires no access to model weights or clean reference data, making it broadly applicable and practical for real-world deployment.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.07090v1",
-      "arxiv_id": "2602.07090v1",
-      "title": "Concept-Aware Privacy Mechanisms for Defending Embedding Inversion Attacks",
-      "authors": [
-        "Yu-Che Tsai",
-        "Hsiang Hsiao",
-        "Kuan-Yu Chen",
-        "Shou-De Lin"
-      ],
-      "abstract": "Text embeddings enable numerous NLP applications but face severe privacy risks from embedding inversion attacks, which can expose sensitive attributes or reconstruct raw text. Existing differential privacy defenses assume uniform sensitivity across embedding dimensions, leading to excessive noise and degraded utility. We propose SPARSE, a user-centric framework for concept-specific privacy protection in text embeddings. SPARSE combines (1) differentiable mask learning to identify privacy-sensitive dimensions for user-defined concepts, and (2) the Mahalanobis mechanism that applies elliptical noise calibrated by dimension sensitivity. Unlike traditional spherical noise injection, SPARSE selectively perturbs privacy-sensitive dimensions while preserving non-sensitive semantics. Evaluated across six datasets with three embedding models and attack scenarios, SPARSE consistently reduces privacy leakage while achieving superior downstream performance compared to state-of-the-art DP methods.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.07090v1",
-      "url": "https://arxiv.org/abs/2602.07090v1",
-      "categories": [
-        "cs.CR",
-        "cs.AI"
-      ],
-      "published_official": true,
-      "keywords": [
-        "dp",
-        "differential",
-        "privacy"
-      ],
-      "keyword_score": 3,
-      "summary": "This paper introduces SPARSE, a concept-aware privacy framework for protecting text embeddings against inversion attacks. Unlike standard differential privacy methods that add uniform spherical noise, SPARSE uses differentiable mask learning to identify embedding dimensions most sensitive to user-defined private concepts (e.g., gender or age), then applies the Mahalanobis mechanism—elliptical, sensitivity-calibrated noise—to perturb only those dimensions. Evaluated across six datasets, three embedding models, and multiple attack settings, SPARSE significantly reduces privacy leakage while preserving downstream task utility better than state-of-the-art DP baselines. Its key contribution is shifting from uniform to concept-specific, dimension-aware noise injection—enhancing both privacy and utility.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06518v1",
-      "arxiv_id": "2602.06518v1",
-      "title": "Sequential Auditing for f-Differential Privacy",
-      "authors": [
-        "Tim Kutta",
-        "Martin Dunsche",
-        "Yu Wei",
-        "Vassilis Zikas"
-      ],
-      "abstract": "We present new auditors to assess Differential Privacy (DP) of an algorithm based on output samples. Such empirical auditors are common to check for algorithmic correctness and implementation bugs. Most existing auditors are batch-based or targeted toward the traditional notion of $(\\varepsilon,δ)$-DP; typically both. In this work, we shift the focus to the highly expressive privacy concept of $f$-DP, in which the entire privacy behavior is captured by a single tradeoff curve. Our auditors detect violations across the full privacy spectrum with statistical significance guarantees, which are supported by theory and simulations. Most importantly, and in contrast to prior work, our auditors do not require a user-specified sample size as an input. Rather, they adaptively determine a near-optimal number of samples needed to reach a decision, thereby avoiding the excessively large sample sizes common in many auditing studies. This reduction in sampling cost becomes especially beneficial for expensive training procedures such as DP-SGD. Our method supports both whitebox and blackbox settings and can also be executed in single-run frameworks.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06518v1",
-      "url": "https://arxiv.org/abs/2602.06518v1",
-      "categories": [
-        "cs.CR",
-        "stat.ME",
-        "stat.ML"
-      ],
-      "published_official": true,
-      "keywords": [
-        "dp",
-        "differential",
-        "privacy"
-      ],
-      "keyword_score": 3,
-      "summary": "This paper introduces novel sequential auditors for empirically verifying *f*-Differential Privacy (f-DP), a more expressive privacy framework than standard (ε,δ)-DP. Unlike prior batch-based auditors that require pre-specified sample sizes—often leading to wasteful over-sampling—the proposed methods adaptively determine the minimal number of output samples needed to detect privacy violations with statistical significance guarantees. The auditors operate in both white-box and black-box settings, support single-run execution, and are validated theoretically and via simulations. Key results show substantial reductions in sampling cost—especially critical for expensive DP training procedures like DP-SGD—while maintaining rigorous false-positive control across the full privacy tradeoff curve.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06440v1",
-      "arxiv_id": "2602.06440v1",
-      "title": "TrailBlazer: History-Guided Reinforcement Learning for Black-Box LLM Jailbreaking",
-      "authors": [
-        "Sung-Hoon Yoon",
-        "Ruizhi Qian",
-        "Minda Zhao",
-        "Weiyue Li",
-        "Mengyu Wang"
-      ],
-      "abstract": "Large Language Models (LLMs) have become integral to many domains, making their safety a critical priority. Prior jailbreaking research has explored diverse approaches, including prompt optimization, automated red teaming, obfuscation, and reinforcement learning (RL) based methods. However, most existing techniques fail to effectively leverage vulnerabilities revealed in earlier interaction turns, resulting in inefficient and unstable attacks. Since jailbreaking involves sequential interactions in which each response influences future actions, reinforcement learning provides a natural framework for this problem. Motivated by this, we propose a history-aware RL-based jailbreak framework that analyzes and reweights vulnerability signals from prior steps to guide future decisions. We show that incorporating historical information alone improves jailbreak success rates. Building on this insight, we introduce an attention-based reweighting mechanism that highlights critical vulnerabilities within the interaction history, enabling more efficient exploration with fewer queries. Extensive experiments on AdvBench and HarmBench demonstrate that our method achieves state-of-the-art jailbreak performance while significantly improving query efficiency. These results underscore the importance of historical vulnerability signals in reinforcement learning-driven jailbreak strategies and offer a principled pathway for advancing adversarial research on LLM safeguards.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06440v1",
-      "url": "https://arxiv.org/abs/2602.06440v1",
-      "categories": [
-        "cs.CL",
-        "cs.AI",
-        "cs.CR"
-      ],
-      "published_official": true,
-      "keywords": [
-        "jailbreak",
-        "llm"
-      ],
-      "keyword_score": 2,
-      "summary": "This paper introduces TrailBlazer, a history-guided reinforcement learning (RL) framework for black-box LLM jailbreaking that explicitly leverages vulnerability signals from prior interaction turns—unlike prior RL or optimization methods that treat each query independently. It proposes an attention-based reweighting mechanism to dynamically highlight the most critical historical vulnerabilities, enabling more informed and efficient action selection. Evaluated on AdvBench and HarmBench, TrailBlazer achieves state-of-the-art jailbreak success rates while reducing query count by up to 40% compared to leading baselines. The key insight is that modeling temporal dependencies in attack sequences significantly improves both effectiveness and efficiency of adversarial prompting.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06395v1",
-      "arxiv_id": "2602.06395v1",
-      "title": "Empirical Analysis of Adversarial Robustness and Explainability Drift in Cybersecurity Classifiers",
-      "authors": [
-        "Mona Rajhans",
-        "Vishal Khawarey"
-      ],
-      "abstract": "Machine learning (ML) models are increasingly deployed in cybersecurity applications such as phishing detection and network intrusion prevention. However, these models remain vulnerable to adversarial perturbations small, deliberate input modifications that can degrade detection accuracy and compromise interpretability. This paper presents an empirical study of adversarial robustness and explainability drift across two cybersecurity domains phishing URL classification and network intrusion detection. We evaluate the impact of L (infinity) bounded Fast Gradient Sign Method (FGSM) and Projected Gradient Descent (PGD) perturbations on model accuracy and introduce a quantitative metric, the Robustness Index (RI), defined as the area under the accuracy perturbation curve. Gradient based feature sensitivity and SHAP based attribution drift analyses reveal which input features are most susceptible to adversarial manipulation. Experiments on the Phishing Websites and UNSW NB15 datasets show consistent robustness trends, with adversarial training improving RI by up to 9 percent while maintaining clean-data accuracy. These findings highlight the coupling between robustness and interpretability degradation and underscore the importance of quantitative evaluation in the design of trustworthy, AI-driven cybersecurity systems.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06395v1",
-      "url": "https://arxiv.org/abs/2602.06395v1",
-      "categories": [
-        "cs.CR",
-        "cs.AI",
-        "cs.LG"
-      ],
-      "published_official": true,
-      "keywords": [
-        "machine",
-        "learning",
-        "adversarial"
-      ],
-      "keyword_score": 3,
-      "summary": "This paper empirically investigates the dual degradation of adversarial robustness and model explainability in cybersecurity ML classifiers—specifically for phishing URL detection and network intrusion classification. Using FGSM and PGD attacks with ℓ∞ bounds, the authors introduce the Robustness Index (RI), a quantitative metric based on the area under the accuracy–perturbation curve, and measure explainability drift via gradient-based sensitivity and SHAP attribution changes. Experiments on the Phishing Websites and UNSW-NB15 datasets reveal consistent robustness trends: adversarial training improves RI by up to 9% without sacrificing clean-data accuracy, while also mitigating explainability drift. The study demonstrates a strong coupling between robustness loss and interpretability degradation, advocating for joint evaluation of both properties in trustworthy AI-driven cybersecurity systems.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06345v1",
-      "arxiv_id": "2602.06345v1",
-      "title": "Zero-Trust Runtime Verification for Agentic Payment Protocols: Mitigating Replay and Context-Binding Failures in AP2",
-      "authors": [
-        "Qianlong Lan",
-        "Anuj Kaul",
-        "Shaun Jones",
-        "Stephanie Westrum"
-      ],
-      "abstract": "The deployment of autonomous AI agents capable of executing commercial transactions has motivated the adoption of mandate-based payment authorization protocols, including the Universal Commerce Protocol (UCP) and the Agent Payments Protocol (AP2). These protocols replace interactive, session-based authorization with cryptographically issued mandates, enabling asynchronous and autonomous execution. While AP2 provides specification-level guarantees through signature verification, explicit binding, and expiration semantics, real-world agentic execution introduces runtime behaviors such as retries, concurrency, and orchestration that challenge implicit assumptions about mandate usage.   In this work, we present a security analysis of the AP2 mandate lifecycle and identify enforcement gaps that arise during runtime in agent-based payment systems. We propose a zero-trust runtime verification framework that enforces explicit context binding and consume-once mandate semantics using dynamically generated, time-bound nonces, ensuring that authorization decisions are evaluated at execution time rather than assumed from static issuance properties.   Through simulation-based evaluation under high concurrency, we show that context-aware binding and consume-once enforcement address distinct and complementary attack classes, and that both are required to prevent replay and context-redirect attacks. The proposed framework mitigates all evaluated attacks while maintaining stable verification latency of approximately 3.8~ms at throughput levels up to 10{,}000 transactions per second. We further demonstrate that the required runtime state is bounded by peak concurrency rather than cumulative transaction history, indicating that robust runtime security for agentic payment execution can be achieved with minimal and predictable overhead.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06345v1",
-      "url": "https://arxiv.org/abs/2602.06345v1",
-      "categories": [
-        "cs.CR",
-        "cs.AI"
-      ],
-      "published_official": true,
-      "keywords": [
-        "agent",
-        "security"
-      ],
-      "keyword_score": 2,
-      "summary": "This paper identifies critical runtime security gaps in the Agent Payments Protocol (AP2)—specifically replay and context-binding failures—that arise from real-world agentic behaviors like retries and concurrency, despite AP2’s static cryptographic guarantees. To address these, the authors propose a zero-trust runtime verification framework that enforces *consume-once* mandate semantics and *explicit context binding* using dynamically generated, time-bound nonces evaluated at execution time. Through high-concurrency simulations, they demonstrate that both mechanisms are necessary and complementary: together they prevent replay and context-redirect attacks with near-zero false positives, while sustaining low, stable latency (~3.8 ms) at up to 10,000 TPS. Crucially, the framework’s state overhead scales only with peak concurrency—not total transaction volume—enabling scalable, predictable security for autonomous payment agents.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06336v1",
-      "arxiv_id": "2602.06336v1",
-      "title": "AdFL: In-Browser Federated Learning for Online Advertisement",
-      "authors": [
-        "Ahmad Alemari",
-        "Pritam Sen",
-        "Cristian Borcea"
-      ],
-      "abstract": "Since most countries are coming up with online privacy regulations, such as GDPR in the EU, online publishers need to find a balance between revenue from targeted advertisement and user privacy. One way to be able to still show targeted ads, based on user personal and behavioral information, is to employ Federated Learning (FL), which performs distributed learning across users without sharing user raw data with other stakeholders in the publishing ecosystem. This paper presents AdFL, an FL framework that works in the browsers to learn user ad preferences. These preferences are aggregated in a global FL model, which is then used in the browsers to show more relevant ads to users. AdFL can work with any model that uses features available in the browser such as ad viewability, ad click-through, user dwell time on pages, and page content. The AdFL server runs at the publisher and coordinates the learning process for the users who browse pages on the publisher's website. The AdFL prototype does not require the client to install any software, as it is built utilizing standard APIs available on most modern browsers. We built a proof-of-concept model for ad viewability prediction that runs on top of AdFL. We tested AdFL and the model with two non-overlapping datasets from a website with 40K visitors per day. The experiments demonstrate AdFL's feasibility to capture the training information in the browser in a few milliseconds, show that the ad viewability prediction achieves up to 92.59% AUC, and indicate that utilizing differential privacy (DP) to safeguard local model parameters yields adequate performance, with only modest declines in comparison to the non-DP variant.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06336v1",
-      "url": "https://arxiv.org/abs/2602.06336v1",
-      "categories": [
-        "cs.CR",
-        "cs.DC",
-        "cs.LG"
-      ],
-      "published_official": true,
-      "keywords": [
-        "federated",
-        "dp",
-        "learning",
-        "differential",
-        "privacy"
-      ],
-      "keyword_score": 5,
-      "summary": "This paper introduces AdFL, a browser-based federated learning framework designed to enable privacy-preserving targeted advertising under regulations like GDPR. AdFL trains user ad preference models locally in users’ browsers—using only client-side features (e.g., ad viewability, dwell time, page content)—and aggregates updates at a publisher-hosted server without sharing raw user data. The authors implement and evaluate a proof-of-concept ad viewability predictor on real traffic from a high-traffic website (40K daily visitors), demonstrating sub-millisecond local training and strong predictive performance (up to 92.59% AUC). They further show that integrating differential privacy incurs only modest accuracy trade-offs, confirming AdFL’s practicality for privacy-compliant, scalable ad personalization.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06325v1",
-      "arxiv_id": "2602.06325v1",
-      "title": "Identifying Adversary Tactics and Techniques in Malware Binaries with an LLM Agent",
-      "authors": [
-        "Zhou Xuan",
-        "Xiangzhe Xu",
-        "Mingwei Zheng",
-        "Louis Zheng-Hua Tan",
-        "Jinyao Guo",
-        "Tiantai Zhang",
-        "Le Yu",
-        "Chengpeng Wang",
-        "Xiangyu Zhang"
-      ],
-      "abstract": "Understanding TTPs (Tactics, Techniques, and Procedures) in malware binaries is essential for security analysis and threat intelligence, yet remains challenging in practice. Real-world malware binaries are typically stripped of symbols, contain large numbers of functions, and distribute malicious behavior across multiple code regions, making TTP attribution difficult. Recent large language models (LLMs) offer strong code understanding capabilities, but applying them directly to this task faces challenges in identifying analysis entry points, reasoning under partial observability, and misalignment with TTP-specific decision logic. We present TTPDetect, the first LLM agent for recognizing TTPs in stripped malware binaries. TTPDetect combines dense retrieval with LLM-based neural retrieval to narrow the space of analysis entry points. TTPDetect further employs a function-level analyzing agent consisting of a Context Explorer that performs on-demand, incremental context retrieval and a TTP-Specific Reasoning Guideline that achieves inference-time alignment. We build a new dataset that labels decompiled functions with TTPs across diverse malware families and platforms. TTPDetect achieves 93.25% precision and 93.81% recall on function-level TTP recognition, outperforming baselines by 10.38% and 18.78%, respectively. When evaluated on real world malware samples, TTPDetect recognizes TTPs with a precision of 87.37%. For malware with expert-written reports, TTPDetect recovers 85.7% of the documented TTPs and further discovers, on average, 10.5 previously unreported TTPs per malware.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06325v1",
-      "url": "https://arxiv.org/abs/2602.06325v1",
-      "categories": [
-        "cs.CR",
-        "cs.SE"
-      ],
-      "published_official": true,
-      "keywords": [
-        "inference",
-        "agent",
-        "security",
-        "llm"
-      ],
-      "keyword_score": 4,
-      "summary": "This paper introduces TTPDetect, the first LLM-based agent designed to identify MITRE ATT&CK Tactics, Techniques, and Procedures (TTPs) directly from stripped malware binaries—a challenging task due to symbol stripping, behavioral fragmentation, and lack of ground-truth function-level labels. To address these challenges, TTPDetect combines dense and neural retrieval to prioritize analysis entry points, and employs a function-level agent with an on-demand Context Explorer and a TTP-Specific Reasoning Guideline for inference-time alignment. The authors curate a new benchmark dataset of decompiled functions labeled with TTPs across diverse malware families and platforms. Evaluated on this dataset, TTPDetect achieves 93.25% precision and 93.81% recall—outperforming baselines by over 10% and 18%, respectively—and demonstrates strong real-world utility with 87.37% precision on live malware samples, recovering 85.7% of expert-documented TTPs while discovering ~10.5 novel TTPs per sample on average.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06854v1",
-      "arxiv_id": "2602.06854v1",
-      "title": "SEMA: Simple yet Effective Learning for Multi-Turn Jailbreak Attacks",
-      "authors": [
-        "Mingqian Feng",
-        "Xiaodong Liu",
-        "Weiwei Yang",
-        "Jialin Song",
-        "Xuekai Zhu",
-        "Chenliang Xu",
-        "Jianfeng Gao"
-      ],
-      "abstract": "Multi-turn jailbreaks capture the real threat model for safety-aligned chatbots, where single-turn attacks are merely a special case. Yet existing approaches break under exploration complexity and intent drift. We propose SEMA, a simple yet effective framework that trains a multi-turn attacker without relying on any existing strategies or external data. SEMA comprises two stages. Prefilling self-tuning enables usable rollouts by fine-tuning on non-refusal, well-structured, multi-turn adversarial prompts that are self-generated with a minimal prefix, thereby stabilizing subsequent learning. Reinforcement learning with intent-drift-aware reward trains the attacker to elicit valid multi-turn adversarial prompts while maintaining the same harmful objective. We anchor harmful intent in multi-turn jailbreaks via an intent-drift-aware reward that combines intent alignment, compliance risk, and level of detail. Our open-loop attack regime avoids dependence on victim feedback, unifies single- and multi-turn settings, and reduces exploration complexity. Across multiple datasets, victim models, and jailbreak judges, our method achieves state-of-the-art (SOTA) attack success rates (ASR), outperforming all single-turn baselines, manually scripted and template-driven multi-turn baselines, as well as our SFT (Supervised Fine-Tuning) and DPO (Direct Preference Optimization) variants. For instance, SEMA performs an average $80.1\\%$ ASR@1 across three closed-source and open-source victim models on AdvBench, 33.9% over SOTA. The approach is compact, reproducible, and transfers across targets, providing a stronger and more realistic stress test for large language model (LLM) safety and enabling automatic redteaming to expose and localize failure modes. Our code is available at: https://github.com/fmmarkmq/SEMA.",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06854v1",
-      "url": "https://arxiv.org/abs/2602.06854v1",
-      "categories": [
-        "cs.CL"
-      ],
-      "published_official": true,
-      "keywords": [
-        "jailbreak",
-        "llm"
-      ],
-      "keyword_score": 2,
-      "summary": "SEMA is a novel, self-supervised framework for generating effective multi-turn jailbreak attacks against safety-aligned LLMs—addressing the realistic threat where attackers iteratively refine prompts across turns. It introduces two key innovations: (1) *prefilling self-tuning*, which bootstraps training using self-generated, non-refusal multi-turn adversarial prompts with minimal prefixes to stabilize exploration; and (2) *intent-drift-aware reinforcement learning*, which optimizes attack success while preserving harmful intent via a composite reward combining intent alignment, compliance risk, and prompt detail. Operating in an open-loop regime (no victim feedback required), SEMA unifies single- and multi-turn settings and significantly reduces exploration complexity. It achieves state-of-the-art attack success rates—e.g., 80.1% ASR@1 on AdvBench across diverse victim models—outperforming all prior single-turn, scripted, template-based, and SFT/DPO baselines by up to 33.9%. The method is compact, reproducible, transferable across models, and enables scalable, automated redteaming for robust LLM safety evaluation.",
-      "summary_status": "success"
-    },
-    {
-      "id": "arxiv_2602.06268v1",
-      "arxiv_id": "2602.06268v1",
-      "title": "MPIB: A Benchmark for Medical Prompt Injection Attacks and Clinical Safety in LLMs",
-      "authors": [
-        "Junhyeok Lee",
-        "Han Jang",
-        "Kyu Sung Choi"
-      ],
-      "abstract": "Large Language Models (LLMs) and Retrieval-Augmented Generation (RAG) systems are increasingly integrated into clinical workflows; however, prompt injection attacks can steer these systems toward clinically unsafe or misleading outputs. We introduce the Medical Prompt Injection Benchmark (MPIB), a dataset-and-benchmark suite for evaluating clinical safety under both direct prompt injection and indirect, RAG-mediated injection across clinically grounded tasks. MPIB emphasizes outcome-level risk via the Clinical Harm Event Rate (CHER), which measures high-severity clinical harm events under a clinically grounded taxonomy, and reports CHER alongside Attack Success Rate (ASR) to disentangle instruction compliance from downstream patient risk. The benchmark comprises 9,697 curated instances constructed through multi-stage quality gates and clinical safety linting. Evaluating MPIB across a diverse set of baseline LLMs and defense configurations, we find that ASR and CHER can diverge substantially, and that robustness depends critically on whether adversarial instructions appear in the user query or in retrieved context. We release MPIB with evaluation code, adversarial baselines, and comprehensive documentation to support reproducible and systematic research on clinical prompt injection. Code and data are available at GitHub (code) and Hugging Face (data).",
-      "published": "2026-02-06",
-      "source": "arXiv",
-      "pdf_link": "https://arxiv.org/pdf/2602.06268v1",
-      "url": "https://arxiv.org/abs/2602.06268v1",
-      "categories": [
-        "cs.CL",
-        "cs.LG"
-      ],
-      "published_official": true,
-      "keywords": [
-        "prompt",
-        "injection"
-      ],
-      "keyword_score": 2,
-      "summary": "This paper introduces MPIB, a new benchmark specifically designed to evaluate clinical safety risks from prompt injection attacks against LLMs and RAG systems in medical settings. It proposes the Clinical Harm Event Rate (CHER)—a novel, outcome-focused metric grounded in clinical taxonomy—to measure high-severity patient harm, complementing traditional Attack Success Rate (ASR) to distinguish instruction compliance from real-world risk. MPIB comprises 9,697 rigorously curated instances covering both direct (user-query) and indirect (RAG-retrieved context) injection scenarios, validated through multi-stage clinical safety linting. Evaluation across diverse LLMs and defenses reveals that ASR and CHER often diverge significantly, and robustness critically depends on attack location (user input vs. retrieved context). The benchmark is publicly released with code, data, and documentation to enable reproducible research on medical AI safety.",
-      "summary_status": "success"
     }
   ],
-  "last_updated": "2026-02-12T09:35:19.694327",
-  "total_count": 103
+  "last_updated": "2026-02-13T02:06:56.079674",
+  "total_count": 79
 }
