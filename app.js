@@ -120,6 +120,19 @@ function displayPapers(papers) {
     });
 }
 
+// Render Markdown to HTML
+function renderMarkdown(text) {
+    if (!text) return '';
+
+    // Use marked.js to parse Markdown
+    if (typeof marked !== 'undefined') {
+        return marked.parse(text);
+    }
+
+    // Fallback: basic line break conversion
+    return escapeHtml(text).replace(/\n/g, '<br>');
+}
+
 // Create paper card HTML
 function createPaperCard(paper, index) {
     const authors = paper.authors.slice(0, 5).join(', ') +
@@ -131,6 +144,9 @@ function createPaperCard(paper, index) {
         .slice(0, 8)
         .map(kw => `<span class="keyword-tag">${kw}</span>`)
         .join('');
+
+    // Render summary as Markdown
+    const summaryHtml = renderMarkdown(paper.summary || paper.abstract);
 
     return `
         <div class="paper-card">
@@ -148,7 +164,7 @@ function createPaperCard(paper, index) {
             </div>
 
             <div class="paper-summary">
-                ${escapeHtml(paper.summary || paper.abstract)}
+                ${summaryHtml}
             </div>
 
             ${keywords ? `<div class="paper-keywords">${keywords}</div>` : ''}

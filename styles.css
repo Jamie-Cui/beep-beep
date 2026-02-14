@@ -185,8 +185,71 @@ header .subtitle {
     margin: 1rem 0;
     color: #555;
     line-height: 1.6;
-    white-space: pre-wrap;
     word-wrap: break-word;
+}
+
+/* Markdown formatting in summary */
+.paper-summary h1,
+.paper-summary h2,
+.paper-summary h3 {
+    margin: 1rem 0 0.5rem 0;
+    color: #2c3e50;
+}
+
+.paper-summary h1 {
+    font-size: 1.3rem;
+}
+
+.paper-summary h2 {
+    font-size: 1.1rem;
+}
+
+.paper-summary h3 {
+    font-size: 1rem;
+}
+
+.paper-summary p {
+    margin: 0.5rem 0;
+}
+
+.paper-summary ul,
+.paper-summary ol {
+    margin: 0.5rem 0;
+    padding-left: 2rem;
+}
+
+.paper-summary li {
+    margin: 0.25rem 0;
+}
+
+.paper-summary code {
+    background: #f4f4f4;
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+.paper-summary pre {
+    background: #f4f4f4;
+    padding: 0.5rem;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+.paper-summary blockquote {
+    border-left: 3px solid #3498db;
+    padding-left: 1rem;
+    margin: 0.5rem 0;
+    color: #666;
+}
+
+.paper-summary strong {
+    color: #2c3e50;
+}
+
+.paper-summary em {
+    font-style: italic;
 }
 
 .paper-keywords {
