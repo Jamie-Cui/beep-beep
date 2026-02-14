@@ -185,6 +185,8 @@ header .subtitle {
     margin: 1rem 0;
     color: #555;
     line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 .paper-keywords {
