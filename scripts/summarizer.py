@@ -104,7 +104,7 @@ Provide a concise summary:"""
 
     def _create_bilingual_prompt(self, title: str, abstract: str) -> str:
         """Create a prompt for bilingual summarization."""
-        return f"""请对这篇研究论文生成中英文双语摘要。
+        return f"""请对这篇研究论文生成中英文双语摘要。**重要：你有 {self.max_tokens} tokens 的输出限制，请合理分配给中英文两部分。**
 
 论文标题: {title}
 
@@ -113,16 +113,20 @@ Provide a concise summary:"""
 请按照以下格式输出（严格遵守格式，以便程序解析）：
 
 [中文摘要]
-<这里写中文摘要，可以使用Markdown格式，包括标题、列表等>
+<这里写中文摘要，约占 60-70% 篇幅，可使用Markdown格式>
 
 [English Summary]
-<这里写英文摘要，可以使用Markdown格式>
+<这里写英文摘要，约占 30-40% 篇幅，可使用Markdown格式>
 
-要求：
-1. 中文摘要：详细解读论文的背景、方法、主要发现和创新点
-2. 英文摘要：简洁概括论文的核心贡献和关键结果（3-5句话）
-3. 两个摘要都使用Markdown格式（可以包含标题、加粗、列表等）
-4. 必须严格遵守 [中文摘要] 和 [English Summary] 的分隔标记"""
+**字数分配建议（基于 {self.max_tokens} tokens 限制）：**
+- 中文摘要：约 400-600 字，包含背景、方法、主要发现和创新点
+- 英文摘要：约 150-250 词，简洁概括核心贡献和关键结果（3-5 sentences）
+
+**格式要求：**
+1. 必须包含且仅包含两个部分：[中文摘要] 和 [English Summary]
+2. 两个标记必须完整出现，用于程序解析
+3. 可以使用 Markdown 格式（## 标题、**加粗**、列表等）
+4. 确保在 token 限制内完成两个摘要，不要截断"""
 
     def _parse_bilingual_summary(self, text: str) -> tuple[str, str]:
         """Parse bilingual summary response into Chinese and English parts."""
