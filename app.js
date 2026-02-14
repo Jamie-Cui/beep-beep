@@ -1,7 +1,6 @@
 // Global state
 let allPapers = [];
 let filteredPapers = [];
-let currentLanguage = 'zh'; // Default to Chinese
 
 // Load papers on page load
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,17 +13,42 @@ function setupEventListeners() {
     const searchInput = document.getElementById('searchInput');
     const sourceFilter = document.getElementById('sourceFilter');
     const sortBy = document.getElementById('sortBy');
-    const languageFilter = document.getElementById('languageFilter');
     const exportAllBtn = document.getElementById('exportAllBtn');
 
     searchInput.addEventListener('input', filterAndDisplay);
     sourceFilter.addEventListener('change', filterAndDisplay);
     sortBy.addEventListener('change', filterAndDisplay);
-    languageFilter.addEventListener('change', (e) => {
-        currentLanguage = e.target.value;
-        filterAndDisplay();
-    });
     exportAllBtn.addEventListener('click', exportAllPapers);
+}
+
+// Toggle language for a specific paper card
+function toggleLanguage(index, lang) {
+    const summaryDiv = document.querySelector(`#paper-summary-${index}`);
+    const zhBtn = document.querySelector(`#lang-zh-${index}`);
+    const enBtn = document.querySelector(`#lang-en-${index}`);
+
+    if (!summaryDiv || !zhBtn || !enBtn) return;
+
+    const paper = filteredPapers[index];
+    if (!paper) return;
+
+    // Get the appropriate summary
+    const summaryText = lang === 'zh'
+        ? (paper.summary_zh || paper.summary || paper.abstract)
+        : (paper.summary_en || paper.summary || paper.abstract);
+
+    // Update content
+    summaryDiv.innerHTML = renderMarkdown(summaryText);
+    summaryDiv.dataset.lang = lang;
+
+    // Update button states
+    if (lang === 'zh') {
+        zhBtn.classList.add('active');
+        enBtn.classList.remove('active');
+    } else {
+        zhBtn.classList.remove('active');
+        enBtn.classList.add('active');
+    }
 }
 
 // Load papers from JSON
@@ -151,16 +175,12 @@ function createPaperCard(paper, index) {
         .map(kw => `<span class="keyword-tag">${kw}</span>`)
         .join('');
 
-    // Get summary based on current language
-    let summaryText;
-    if (currentLanguage === 'zh') {
-        summaryText = paper.summary_zh || paper.summary || paper.abstract;
-    } else {
-        summaryText = paper.summary_en || paper.summary || paper.abstract;
-    }
-
-    // Render summary as Markdown
+    // Default to Chinese summary
+    const summaryText = paper.summary_zh || paper.summary || paper.abstract;
     const summaryHtml = renderMarkdown(summaryText);
+
+    // Check if bilingual summaries are available
+    const hasBilingual = paper.summary_zh && paper.summary_en;
 
     return `
         <div class="paper-card">
@@ -177,8 +197,16 @@ function createPaperCard(paper, index) {
                 <strong>Authors:</strong> ${escapeHtml(authors)}
             </div>
 
-            <div class="paper-summary">
-                ${summaryHtml}
+            <div class="summary-container">
+                ${hasBilingual ? `
+                <div class="lang-toggle-group">
+                    <button class="lang-toggle-btn active" id="lang-zh-${index}" onclick="toggleLanguage(${index}, 'zh')">中</button>
+                    <button class="lang-toggle-btn" id="lang-en-${index}" onclick="toggleLanguage(${index}, 'en')">EN</button>
+                </div>
+                ` : ''}
+                <div class="paper-summary" id="paper-summary-${index}" data-lang="zh">
+                    ${summaryHtml}
+                </div>
             </div>
 
             ${keywords ? `<div class="paper-keywords">${keywords}</div>` : ''}
