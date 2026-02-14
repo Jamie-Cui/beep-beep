@@ -1,16 +1,18 @@
-# Security/Crypto + LLM Paper Aggregator
+# Paper Pulse
 
-Automatically fetches and summarizes papers from arXiv and IACR related to security, cryptography, and large language models.
+Automatically fetches and summarizes research papers from arXiv and IACR ePrint based on customizable keyword filters.
 
 ## Features
 
 - 🔄 Daily automatic updates via GitHub Actions
-- 📚 Fetches papers from arXiv (cs.CR, cs.AI, cs.LG) and IACR ePrint
-- 🤖 AI-powered summaries using ModelScope API
-- 🗂️ Keeps last 7 days of papers
-- 🔍 Flexible keyword filtering via config file (OR between lines, AND within lines)
+- 📚 Fetches papers from arXiv (customizable categories) and IACR ePrint
+- 🤖 AI-powered bilingual summaries (Chinese + English) using DashScope API
+- 🗂️ Configurable retention period (default: 7 days)
+- 🔍 Flexible keyword filtering (OR between lines, AND within lines)
+- 🌐 Bilingual UI with per-card language toggle (中/EN)
 - 📋 BibTeX export for citations
-- 🎨 Minimal, clean card-based UI
+- 🎨 Minimal, clean card-based interface
+- ✨ Markdown support in summaries
 
 ## Setup
 
@@ -21,7 +23,7 @@ Automatically fetches and summarizes papers from arXiv and IACR related to secur
    ```
 
 3. Set up GitHub Secrets:
-   - `MODELSCOPE_API_KEY`: Your ModelScope API key
+   - `DASHSCOPE_API_KEY` (or `MODELSCOPE_API_KEY`): Your DashScope/ModelScope API key
 
 4. Enable GitHub Actions in your repository
 
@@ -40,10 +42,23 @@ The system uses `keywords.txt` to filter papers. Edit this file to customize whi
 
 Example:
 ```
-llm                    # Matches papers with "llm"
+transformer            # Matches papers with "transformer"
 neural backdoor        # Matches papers with BOTH "neural" AND "backdoor"
 federated learning     # Matches papers with "federated learning"
+zero knowledge         # Matches papers with "zero knowledge"
 ```
+
+## Configuration
+
+All settings are managed in `config.toml`:
+
+- **Retention period**: `days_back` (default: 7 days)
+- **arXiv categories**: `fetchers.arxiv.categories` (default: cs.CR, cs.AI, cs.LG, cs.CL)
+- **AI model**: `summarizer.model` (options: qwen-turbo, qwen-plus, qwen-max)
+- **Summary length**: `summarizer.max_tokens` (default: 1500 for bilingual)
+- **Rate limits**: `delay` and `rate_limit_delay`
+
+See `CONFIG_GUIDE.md` for detailed configuration options.
 
 ## Usage
 
@@ -55,10 +70,16 @@ Papers are automatically fetched daily at 00:00 UTC via GitHub Actions.
 2. Select "Fetch Papers" workflow
 3. Click "Run workflow"
 
+### Local Testing
+```bash
+export DASHSCOPE_API_KEY="your-api-key"
+python scripts/main.py
+```
+
 ## Project Structure
 
 ```
-beep-beep/
+paper-pulse/
 ├── .github/workflows/
 │   └── fetch-papers.yml      # GitHub Actions workflow
 ├── scripts/
@@ -66,11 +87,13 @@ beep-beep/
 │   │   ├── arxiv.py          # arXiv API fetcher
 │   │   └── iacr.py           # IACR API fetcher
 │   ├── filter.py             # Keyword filtering
-│   ├── summarizer.py         # ModelScope AI summarization
+│   ├── summarizer.py         # DashScope AI summarization
 │   └── main.py               # Main orchestrator
 ├── data/
 │   ├── papers.json           # Current papers
 │   └── failed.json           # Papers with failed summarization
+├── config.toml               # Configuration file
+├── keywords.txt              # Keyword filter rules
 ├── index.html                # Main page
 ├── styles.css                # Styles
 ├── app.js                    # Frontend logic

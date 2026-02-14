@@ -12,7 +12,7 @@
 
 ## 在GitHub中设置密钥
 
-1. 进入你的GitHub仓库: https://github.com/Jamie-Cui/beep-beep
+1. 进入你的GitHub仓库
 2. 点击 **Settings** → **Secrets and variables** → **Actions**
 3. 点击 **New repository secret**
 4. 添加密钥:

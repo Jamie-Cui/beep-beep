@@ -4,7 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Security/Crypto + LLM paper aggregator that automatically fetches papers from arXiv and IACR ePrint, filters them by keywords, and generates AI summaries using Alibaba's DashScope API (Qwen). The system runs daily via GitHub Actions and displays results on a static GitHub Pages site.
+**Paper Pulse** is a keyword-based research paper aggregator that automatically fetches papers from arXiv and IACR ePrint, filters them by customizable keywords, and generates bilingual AI summaries using Alibaba's DashScope API (Qwen). The system runs daily via GitHub Actions and displays results on a static GitHub Pages site.
+
+**Key Characteristics**:
+- Domain-agnostic: Uses keyword filtering to match papers (not limited to specific fields)
+- Bilingual: Generates both Chinese and English summaries
+- Configurable: All major settings managed via `config.toml`
 
 ## Development Commands
 
@@ -39,9 +44,9 @@ The GitHub Actions workflow can be triggered manually from the Actions tab or ru
 ### Data Flow
 
 1. **Fetching** (`scripts/fetchers/`):
-   - `arxiv.py`: Fetches from arXiv API (categories: cs.CR, cs.AI, cs.LG, cs.CL) with 3-second delays between requests
+   - `arxiv.py`: Fetches from arXiv API (configurable categories, default: cs.CR, cs.AI, cs.LG, cs.CL) with 3-second delays between requests
    - `iacr.py`: Fetches from IACR ePrint RSS feed with 2-second delays
-   - Both respect rate limits and fetch papers from last 7 days by default
+   - Both respect rate limits and fetch papers from configurable time period (default: 7 days)
 
 2. **Filtering** (`scripts/filter.py`):
    - Uses `keywords.txt` for flexible OR/AND keyword matching
@@ -51,9 +56,13 @@ The GitHub Actions workflow can be triggered manually from the Actions tab or ru
 
 3. **Summarization** (`scripts/summarizer.py`):
    - Uses DashScope API (Alibaba Cloud's Qwen model)
-   - Default: `qwen-plus` model with 500 max tokens
+   - Default: `qwen-plus` model with 1500 max tokens
+   - Generates **bilingual summaries** (Chinese and English) in a single API call
+   - Chinese summary (~60-70% of output) + English summary (~30-40% of output)
+   - Uses structured prompt with `[中文摘要]` and `[English Summary]` markers for parsing
+   - Supports Markdown formatting in summaries
    - 1-second delay between API calls for rate limiting
-   - Retries failed papers on subsequent runs
+   - Retries failed papers with exponential backoff (max 3 retries, 5s delay)
    - Papers with failed summaries fall back to using abstract
 
 4. **Data Management** (`scripts/main.py`):
@@ -64,8 +73,11 @@ The GitHub Actions workflow can be triggered manually from the Actions tab or ru
 
 5. **Frontend** (`index.html`, `app.js`, `styles.css`):
    - Static site with client-side filtering/search
-   - BibTeX export functionality for citations
+   - **Bilingual summary toggle** (中/EN buttons) on each paper card
+   - Markdown rendering using marked.js library (CDN: https://cdn.jsdelivr.net/npm/marked/marked.min.js)
+   - BibTeX export functionality for citations (single paper and bulk export)
    - Card-based UI with source badges (arXiv/IACR)
+   - Summary language state managed per-card via `toggleLanguage(index, lang)` function
 
 ### Key Data Structures
 
@@ -76,7 +88,9 @@ The GitHub Actions workflow can be triggered manually from the Actions tab or ru
   "title": "...",
   "authors": ["Author1", "Author2"],
   "abstract": "...",
-  "summary": "AI-generated summary or fallback to abstract",
+  "summary": "Chinese summary (default, backward compatibility)",
+  "summary_zh": "AI-generated Chinese summary (Markdown format)",
+  "summary_en": "AI-generated English summary (Markdown format)",
   "summary_status": "success" | "failed",
   "published": "YYYY-MM-DD",
   "source": "arXiv" | "IACR",
@@ -132,10 +146,44 @@ The GitHub Actions workflow can be triggered manually from the Actions tab or ru
 
 **Adjusting rate limits**: Edit `delay` and `rate_limit_delay` in `config.toml`
 
-**Customizing summary prompt**: Edit `prompt_template` in `[summarizer]` section of `config.toml` - must include `{title}` and `{abstract}` placeholders
+**Customizing summary prompt**:
+- **For bilingual summaries**: Edit `_create_bilingual_prompt()` method in `scripts/summarizer.py` (lines ~92-115)
+- **For single-language summaries**: Edit `prompt_template` in `[summarizer]` section of `config.toml` - must include `{title}` and `{abstract}` placeholders
+- **IMPORTANT**: Bilingual prompt is hard-coded in Python for better control over format and parsing
 
 See `CONFIG_GUIDE.md` for detailed configuration examples and best practices.
 
 ## GitHub Pages Deployment
 
 The site deploys from the root directory (`/`) on the master branch. The `index.html`, `app.js`, `styles.css`, and `data/` directory must be in the root for proper deployment.
+
+## Bilingual Summary Architecture
+
+**Critical Implementation Details**:
+
+1. **Summary Generation** (scripts/summarizer.py:92-115):
+   - Single API call generates both Chinese and English summaries
+   - Structured prompt uses `[中文摘要]` and `[English Summary]` as section markers
+   - Token allocation: ~60-70% Chinese, ~30-40% English (total: 1500 tokens)
+   - Supports Markdown formatting (headings, bold, lists)
+
+2. **Summary Parsing** (scripts/summarizer.py:117-138):
+   - Regex-based extraction using section markers
+   - Fallback parsing if markers are malformed
+   - If parsing fails completely, uses full response for both languages
+
+3. **Frontend Language Toggle** (app.js:14-35):
+   - `toggleLanguage(index, lang)` function switches between Chinese ('zh') and English ('en')
+   - State stored in `data-lang` attribute on summary div
+   - Button styling managed via `.active` class
+   - Markdown rendering applied via `renderMarkdown()` helper
+
+4. **Backward Compatibility**:
+   - `summary` field defaults to `summary_zh` for legacy support
+   - If only `summary` exists (old data), both language toggles show same content
+   - Language toggle UI only appears when both `summary_zh` and `summary_en` exist
+
+**When modifying bilingual summaries**:
+- Do NOT change section markers without updating parser regex in `_parse_bilingual_summary()`
+- Token limit (`max_tokens` in config.toml) must accommodate both languages
+- Test with real API calls, as model output format can vary

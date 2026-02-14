@@ -1,11 +1,11 @@
 # Setup Guide
 
-This guide will help you set up and deploy your Security/Crypto + LLM Paper Aggregator on GitHub Pages.
+This guide will help you set up and deploy Paper Pulse on GitHub Pages.
 
 ## Prerequisites
 
 - GitHub account
-- ModelScope API key (free tier available at https://modelscope.cn)
+- DashScope API key (free tier available at https://dashscope.console.aliyun.com/)
 - Git installed locally
 
 ## Step 1: Repository Setup
@@ -13,7 +13,7 @@ This guide will help you set up and deploy your Security/Crypto + LLM Paper Aggr
 1. Push this code to your GitHub repository:
    ```bash
    git add .
-   git commit -m "Initial commit: Paper aggregator"
+   git commit -m "Initial commit: Paper Pulse"
    git push origin master
    ```
 
@@ -23,8 +23,8 @@ This guide will help you set up and deploy your Security/Crypto + LLM Paper Aggr
 2. Click on **Settings** → **Secrets and variables** → **Actions**
 3. Click **New repository secret**
 4. Add the following secret:
-   - Name: `MODELSCOPE_API_KEY`
-   - Value: Your ModelScope API key
+   - Name: `DASHSCOPE_API_KEY` (or `MODELSCOPE_API_KEY`)
+   - Value: Your DashScope/ModelScope API key
 
 ## Step 3: Enable GitHub Actions
 
@@ -60,18 +60,18 @@ The workflow runs automatically every day at 00:00 UTC.
 
 1. After the workflow completes, check that `data/papers.json` has been created
 2. Visit your GitHub Pages URL
-3. You should see the papers displayed in card format
+3. You should see the papers displayed in card format with bilingual summaries
 
 ## Troubleshooting
 
-### Workflow fails with "MODELSCOPE_API_KEY not set"
+### Workflow fails with "API key not set"
 - Make sure you've added the secret in Step 2
-- The secret name must be exactly `MODELSCOPE_API_KEY`
+- The secret name must be `DASHSCOPE_API_KEY` or `MODELSCOPE_API_KEY`
 
 ### No papers showing up
 - Check the workflow logs to see if papers were fetched
-- Papers must match BOTH security/crypto AND LLM/AI keywords
-- Only papers from the last 7 days are kept
+- Papers must match your keyword filters in `keywords.txt`
+- Only papers from the configured time period are kept (default: 7 days)
 
 ### GitHub Pages shows 404
 - Make sure you selected `/ (root)` as the folder in Pages settings
@@ -80,7 +80,7 @@ The workflow runs automatically every day at 00:00 UTC.
 
 ### Rate limiting issues
 - The default delays (3s for arXiv, 1s for summarization) should prevent rate limiting
-- If you still hit limits, you can increase delays in the code
+- If you still hit limits, increase delays in `config.toml`
 
 ## Customization
 
@@ -96,9 +96,9 @@ Edit `keywords.txt` in the repository root to customize which papers are include
 
 **Examples:**
 ```
-# Match papers with "llm" OR "gpt"
-llm
-gpt
+# Match papers with "transformer" OR "attention"
+transformer
+attention
 
 # Match papers with BOTH "neural" AND "backdoor" (both words must appear)
 neural backdoor
@@ -107,14 +107,41 @@ neural backdoor
 federated learning
 ```
 
-A paper will be included if it matches ANY line in the file. This makes IACR papers (which are already crypto-focused) easy to filter - just add keywords relevant to your research interests.
+A paper will be included if it matches ANY line in the file.
 
-### Change how many days of papers to keep
+### Change configuration settings
 
-Edit `scripts/main.py`, line 95:
-```python
-DAYS_BACK = 7  # Change this number
+Edit `config.toml` to customize:
+
+**Retention period:**
+```toml
+[general]
+days_back = 7  # Keep papers from last 7 days
 ```
+
+**arXiv categories:**
+```toml
+[fetchers.arxiv]
+categories = ["cs.CR", "cs.AI", "cs.LG", "cs.CL"]  # Customize categories
+```
+
+**AI model:**
+```toml
+[summarizer]
+model = "qwen-plus"  # Options: qwen-turbo, qwen-plus, qwen-max
+max_tokens = 1500     # For bilingual summaries
+```
+
+**Rate limits:**
+```toml
+[fetchers.arxiv]
+delay = 3.0  # Delay between arXiv requests
+
+[summarizer]
+rate_limit_delay = 1.0  # Delay between summarization calls
+```
+
+See `CONFIG_GUIDE.md` for more detailed configuration options.
 
 ### Change workflow schedule
 
@@ -134,13 +161,13 @@ Test the fetcher locally before deploying:
 pip install -r requirements.txt
 
 # Set API key
-export MODELSCOPE_API_KEY="your-key-here"
+export DASHSCOPE_API_KEY="your-key-here"
 
 # Run the script
 python scripts/main.py
 ```
 
-This will create `data/papers.json` which you can inspect.
+This will create `data/papers.json` which you can inspect. Open `index.html` in a browser to view the results.
 
 ## License
 
