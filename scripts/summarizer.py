@@ -7,6 +7,7 @@ import os
 # Import progress utilities if available
 try:
     from progress import ProgressBar
+
     HAS_PROGRESS = True
 except ImportError:
     HAS_PROGRESS = False
@@ -16,14 +17,22 @@ class ModelScopeSummarizer:
     """Summarizes paper abstracts using DashScope API (Qwen/通义千问)."""
 
     # DashScope API (阿里云通义千问)
-    API_URL = "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation"
+    API_URL = (
+        "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation"
+    )
     DEFAULT_MODEL = "qwen-plus"  # Free tier available
     DEFAULT_MAX_TOKENS = 500
     DEFAULT_TEMPERATURE = 0.7
     DEFAULT_TIMEOUT = 60
     DEFAULT_RATE_LIMIT_DELAY = 1.0
 
-    def __init__(self, api_key: str, model: str = None, max_retries: int = 3, retry_delay: float = 5.0):
+    def __init__(
+        self,
+        api_key: str,
+        model: str = None,
+        max_retries: int = 3,
+        retry_delay: float = 5.0,
+    ):
         """
         Initialize DashScope summarizer.
 
@@ -48,8 +57,8 @@ class ModelScopeSummarizer:
         Returns:
             Summary text, or None if summarization fails
         """
-        title = paper.get('title', '')
-        abstract = paper.get('abstract', '')
+        title = paper.get("title", "")
+        abstract = paper.get("abstract", "")
 
         if not abstract:
             return None
@@ -71,7 +80,7 @@ class ModelScopeSummarizer:
 
     def _create_prompt(self, title: str, abstract: str) -> str:
         """Create a prompt for the summarization model."""
-        return f"""Please summarize this research paper in 3-5 sentences. Focus on the main contribution, methods, and key results.
+        return f"""你是一位精通各领域前沿研究的学术文献解读专家，面对一篇给定的论文，请你高效阅读并迅速提取出其核心内容。要求在解读过程中，先对文献的背景、研究目的和问题进行简明概述，再详细梳理研究方法、关键数据、主要发现及结论，同时对新颖概念进行通俗易懂的解释，帮助读者理解论文的逻辑与创新点；最后，请对文献的优缺点进行客观评价，并指出可能的后续研究方向。整体报告结构清晰、逻辑严谨。
 
 Title: {title}
 
@@ -83,28 +92,26 @@ Provide a concise summary:"""
         """Call DashScope API to generate summary."""
         headers = {
             "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         }
 
         payload = {
             "model": self.model,
-            "input": {
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ]
-            },
+            "input": {"messages": [{"role": "user", "content": prompt}]},
             "parameters": {
                 "max_tokens": self.DEFAULT_MAX_TOKENS,
                 "temperature": self.DEFAULT_TEMPERATURE,
-                "result_format": "message"
-            }
+                "result_format": "message",
+            },
         }
 
         try:
-            response = requests.post(self.API_URL, json=payload, headers=headers, timeout=self.DEFAULT_TIMEOUT)
+            response = requests.post(
+                self.API_URL,
+                json=payload,
+                headers=headers,
+                timeout=self.DEFAULT_TIMEOUT,
+            )
             response.raise_for_status()
 
             result = response.json()
@@ -157,16 +164,16 @@ Provide a concise summary:"""
             summary = self.summarize(paper)
 
             if summary:
-                paper['summary'] = summary
-                paper['summary_status'] = 'success'
+                paper["summary"] = summary
+                paper["summary_status"] = "success"
                 successful.append(paper)
             else:
-                abstract = paper.get('abstract', '')
+                abstract = paper.get("abstract", "")
                 if abstract:
-                    paper['summary'] = abstract
+                    paper["summary"] = abstract
                 else:
-                    paper['summary'] = 'Summary not available'
-                paper['summary_status'] = 'failed'
+                    paper["summary"] = "Summary not available"
+                paper["summary_status"] = "failed"
                 failed.append(paper)
 
             # Rate limiting
@@ -177,5 +184,7 @@ Provide a concise summary:"""
         if progress:
             progress.finish()
 
-        print(f"\n✓ Summarization complete: {len(successful)} successful, {len(failed)} failed")
+        print(
+            f"\n✓ Summarization complete: {len(successful)} successful, {len(failed)} failed"
+        )
         return successful, failed
